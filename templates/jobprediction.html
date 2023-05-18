@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Role Prediction</title>
+</head>
+<body>
+    <h1>Job Role Prediction</h1>
+
+    <form id="predictionForm">
+        <label for="selfLearning">Self-learning capability?</label>
+        <select id="selfLearning" name="selfLearning">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br>
+
+        <label for="extraCourses">Extra-courses did?</label>
+        <select id="extraCourses" name="extraCourses">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br>
+
+        <!-- Add more input fields for other features -->
+
+        <button type="submit">Predict Job Role</button>
+    </form>
+
+    <div id="predictionResult"></div>
+
+    <script>
+        document.getElementById("predictionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            predictJobRole();
+        });
+
+        function predictJobRole() {
+            // Get form values
+            var form = document.getElementById("predictionForm");
+            var selfLearning = form.elements["selfLearning"].value;
+            var extraCourses = form.elements["extraCourses"].value;
+
+            // Create input data object
+            var inputData = {
+                "self-learning capability?": selfLearning,
+                "Extra-courses did": extraCourses,
+                // Add more properties for other features
+            };
+
+            // Make a POST request to the server with the input data
+            fetch("/predict_job_role", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(inputData)
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                // Display the predicted job role
+                var predictionResult = document.getElementById("predictionResult");
+                predictionResult.innerHTML = "Predicted Job Role: " + data.predicted_job_role;
+            })
+            .catch(function(error) {
+                console.log("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>
