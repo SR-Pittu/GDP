@@ -1,21 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Login</title>
-  </head>
-  <body>
-    <h1>Login</h1>
-    {% if error %}
+<head>
+  <title>Login</title>
+  <style>
+     body {
+          background-image: url('images/login.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      color:brown;   
+    }
+
+    form {
+      text-align:left;
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color:black;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 2px solid  pink;
+      border-radius: 3px;
+    }
+
+    a {
+      
+      align-items: center;
+      width: 200%;
+      padding: 10px;
+      background-color:hotpink;
+      color:aliceblue;
+      font-size: large;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* input[type="submit"]:hover {
+      background-color:darkred;
+    } */
+  </style>
+  <link rel ="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Login</h1>
+  <!-- {% if error %}
     <p>{{ error }}</p>
-    {% endif %}
-    <form method="post" action="/login">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required><br><br>
-      
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required><br><br>
-      
-      <input type="submit" value="Log in">
-    </form>
-  </body>
+  {% endif %} -->
+  <form method="post" action="/login">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <br>
+    <a href="/dashboard" class = "button">Log in</a>
+  </form>
+</body>
 </html>
+
