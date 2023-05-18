@@ -1,10 +1,146 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Register</title>
+    <!-- <style>
+      h1   {color:darkmagenta}
+      title {color: darkblue;}
+      p    {color: red;}
+      label {color: darkblue;}
+      a {color:seagreen;}
+      button {color:darksalmon;}
+      input[type=text], input[type=password]{
+        color:blueviolet;
+
+       }
+
+       body {
+        
+         background-color: gray; 
+        background-image: url('register.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif; 
+       
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+       .content {
+        margin-top: auto;
+       }
+       
+       .action_page.php{
+        width: 400px; /* Adjust the width as per your preference */
+        margin: 0 auto; /* Centers the form horizontally */
+       }
+
+      </style> -->
+
+      <style>
+        /* Container */
+        .container {
+          width: 500px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+      
+        /* Form */
+        form {
+          margin-bottom: 30px;
+        }
+      
+        /* Title */
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          color: darkmagenta;
+        }
+      
+        /* Labels */
+        label {
+          font-weight: bold;
+          color:darkslateblue;
+        }
+
+      
+        /* Inputs */
+        input[type="text"],
+        input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+          color:blueviolet;
+        }
+      
+        .button-container {
+        display: flex;
+        justify-content: center;
+        }
+      
+        /* Register Button */
+        .registerbtn {
+          width: 100%;
+          padding:  10px;
+          font-size: 20px;
+          background-color:beige;
+          color:darkolivegreen;
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+        }
+      
+        /* Register Button Hover */
+        .registerbtn:hover {
+          background-color:lightgrey;
+
+        }
+        /* Error Message */
+        .error-message {
+          color: red;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+
+        body{
+          background-image: url('register.jpg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+          font-family: Arial, sans-serif;
+        }
+      </style>
+
+      <form action="action_page.php">
+      <div class="container">
+      
+      <title>Register</title>
   </head>
   <body>
     <h1>Register</h1>
-    <!-- Your register form here -->
+
+    <form method="post" action="home.html">
+    <label for="email"><b>Email</b></label><br>
+    <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
+
+    <label for="password"><b>Password</b></label><br>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required><br><br>
+
+    <label for="password-reenter"><b>Re-Enter Password</b></label><br>
+    <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
+    <button type="submit" class="registerbtn">Register</button><br><br>
+    </form>
+    </div>
+    
+    
+
+      
   </body>
 </html>
