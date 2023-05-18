@@ -19,6 +19,14 @@ def dashboard():
 @app.route('/personalityprediction')
 def personalityprediction():
     return render_template('personalityprediction.html')
+
+@app.route('/jobprediction')
+def jobprediction():
+    return render_template('jobprediction.html')
+
+@app.route('/salaryprediction')
+def salaryprediction():
+    return render_template('salaryprediction.html')
 if __name__ == '__main__':
     app.debug =  True
     app.run()
