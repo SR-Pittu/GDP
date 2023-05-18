@@ -4,24 +4,36 @@
     <title>Form</title>
     <style>
         body {
-            background-color: black;
-            color: white;
+            background-color:lavenderblush;
+            color:blueviolet;
         }
         
         label {
             display: inline-block;
-            width: 250px;
+            width: 600px;
         }
         
         input[type="text"], input[type="number"] {
             width: 200px;
         }
         
-        input[type="file"], input[type="submit"] {
-            padding: 5px;
-            background-color: red;
+        input[type="file"] {
+            padding: 10px;
+            background-color:darkgoldenrod;
             color: white;
             border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]{
+            padding: 4px;
+            width: 30%;
+            border: 1px;
+            justify-content: center;
+            background-color:hotpink;
+            color:aliceblue;
+            font-size: large;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
     </style>
@@ -35,8 +47,10 @@
         <input type="number" id="age" name="age"><br><br>
         
         <label for="gender">Gender:</label>
+        <br>
         <input type="radio" id="male" name="gender" value="male">
         <label for="male">Male</label>
+        <br>
         <input type="radio" id="female" name="gender" value="female">
         <label for="female">Female</label><br><br>
         
