@@ -19,6 +19,10 @@ def dashboard():
 @app.route('/personalityprediction')
 def personalityprediction():
     return render_template('personalityprediction.html')
+
+@app.route('/loginRedirect')
+def loginRedirect():
+    return render_template('loginRedirect.html')
 if __name__ == '__main__':
     app.debug =  True
     app.run()
