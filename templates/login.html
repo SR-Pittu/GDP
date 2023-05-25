@@ -62,15 +62,18 @@
   <!-- {% if error %}
     <p>{{ error }}</p>
   {% endif %} -->
-  <form method="post" action="/login">
-    <label for="username">Username:</label>
+  <form method="POST" action="/login">
+    <div class="form-group">
+    <label for="username">Username</label>
     <input type="text" id="username" name="username" required>
-    
-    <label for="password">Password:</label>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
     <input type="password" id="password" name="password" required>
+  </div>
     <br>
     <br>
-    <a href="/dashboard.html" class = "button">Log in</a>
+    <a href="/dashboard" class = "button">Log in</a>
   </form>
 </body>
 </html>
