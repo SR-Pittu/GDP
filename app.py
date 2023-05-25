@@ -12,6 +12,7 @@ from flask import url_for, request, session, redirect
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 import bcrypt
+import spacy
 import numpy as np
 from functools import wraps
 import pickle
@@ -60,26 +61,27 @@ class train_model:
             return str_list
         else:   return str(data)
 
-   
-    def prediction_result(aplcnt_name, cv_path, personality_values):
-        applicant_data = {"Candidate Name":aplcnt_name.get(),  "CV Location":cv_path} 
-        age = personality_values[1]
-        print("\n############# Candidate Entered Data #############\n")
-        print(applicant_data, personality_values)
-        personality = model.test(personality_values)
-        print("\n############# Predicted Personality #############\n")
-        print(personality)
-        data = ResumeParser(cv_path).get_extracted_data()
-        try:
-            del data['name']
-            if len(data['mobile_number'])<10:
-                del data['mobile_number']
-        except:
-            pass
-        print("\n############# Resume Parsed Data #############\n")
-        for key in data.keys():
-            if data[key] is not None:
-                print('{} : {}'.format(key,data[key]))
+nlp = spacy.load("en_core_web_sm")
+def prediction_result(aplcnt_name, cv_path, personality_values):
+    applicant_data = {"Candidate Name":aplcnt_name,  "CV Location":cv_path} 
+    age = personality_values[1]
+    print("\n############# Candidate Entered Data #############\n")
+    print(applicant_data, personality_values)
+    model = train_model()
+    personality = model.test(personality_values)
+    print("\n############# Predicted Personality #############\n")
+    print(personality)
+    data = ResumeParser(cv_path).get_extracted_data()
+    try:
+        del data['name']
+        if len(data['mobile_number'])<10:
+            del data['mobile_number']
+    except:
+        pass
+    print("\n############# Resume Parsed Data #############\n")
+    for key in data.keys():
+        if data[key] is not None:
+            print('{} : {}'.format(key,data[key]))
        
     
 
@@ -137,17 +139,15 @@ def dashboard():
 
 @app.route('/personalityprediction', methods=['POST','GET'])
 def personalityprediction():
-    int_values = []
-    for x in request.form.values():
-        int_values.append(x)
-    aplcnt_name =  int_values[0]
+    
+    a =  request.form.get('sName')
     # print(len(features))
-    cv_path =  int_values[3]
-    personality_values = [int_values[4],int_values[5],int_values[6],int_values[7],int_values[8]]
+    b =   request.form.get('cv')
+    c = [request.form.get('openness'),request.form.get('neuroticism'),request.form.get('conscientiousness'),request.form.get('agreeableness'),request.form.get('extraversion')]
     if __name__ == "__main__":
         model = train_model()
         model.train()
-        model.prediction_result(aplcnt_name, cv_path, personality_values)
+        
     return render_template('personalityprediction.html')
 # if __name__ == '__main__':
     
@@ -156,7 +156,9 @@ def personalityprediction():
 def result():
     if __name__ == "__main__":
         model =  personalityprediction()       
-        model.prediction_result(aplcnt_name,cv_path, personality_values)
+        # a = model.request.form.get('sName')
+        # b= model.request.form.get('cv')
+        # c = [model.request.form.get('openness'),model.request.form.get('neuroticism'),model.request.form.get('conscientiousness'),model.request.form.get('agreeableness'),model.request.form.get('extraversion')]
     return render_template('result.html')
 
 @app.route('/jobprediction')
