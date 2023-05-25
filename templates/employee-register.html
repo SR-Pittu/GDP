@@ -1,47 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- <style>
-      h1   {color:darkmagenta}
-      title {color: darkblue;}
-      p    {color: red;}
-      label {color: darkblue;}
-      a {color:seagreen;}
-      button {color:darksalmon;}
-      input[type=text], input[type=password]{
-        color:blueviolet;
-
-       }
-
-       body {
-        
-         background-color: gray; 
-        background-image: url('register.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      font-family: Arial, sans-serif; 
-       
-        height: 100%;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-       .content {
-        margin-top: auto;
-       }
-       
-       .action_page.php{
-        width: 400px; /* Adjust the width as per your preference */
-        margin: 0 auto; /* Centers the form horizontally */
-       }
-
-      </style> -->
-
-      <style>
+<style>
         /* Container */
         .container {
           width: 500px;
@@ -111,23 +68,28 @@
 
         body{
           /* background-image: url('register.jpg'); */
+          background-image: url('career.jpg');
+          background-color: rgb(240, 239, 239);;;
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center;
           font-family: Arial, sans-serif;
-          background-color: rgb(250, 151, 11, 0.571);
+          /* background-color: rgb(250, 151, 11, 0.571); */
         }
       </style>
 
       <form action="action_page.php">
       <div class="container">
       
-      <title>User Register</title>
+      <title>Employee Register</title>
   </head>
   <body>
-    <h1>User Register</h1>
+    <h1>Employee Register</h1>
 
     <form method="post" action="home.html">
+    <label for="email"><b>Organization Name</b></label><br>
+    <input type="text" placeholder="Enter Name" name="email" id="Name" required><br><br>
+
     <label for="email"><b>Email</b></label><br>
     <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
 

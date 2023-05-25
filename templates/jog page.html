@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Page</title>
+  <style>
+    label {
+      display:inline-flex;
+      margin-bottom: 30px;
+      font-style: oblique;
+    }
+     
+    body {
+      background-image: url('img.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family:'Times New Roman', Times, serif;
+    }
+    /* body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    } */
+
+    /* h1 {
+      margin-top: 0;
+    } */
+    select {
+      width: 200px;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    h2 {
+      margin-top: 30px;
+    }
+
+    #applicant-count {
+      font-weight: bold;
+      /* color:deeppink; */
+    }
+
+    ul {
+      /* list-style-type:armenian; */
+      padding: 2;
+      margin: 2;
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color:blue;
+    }
+
+    /* a:hover {
+      text-decoration:cadetblue;
+    } */
+
+  </style>
+</head>
+<body>
+  <h1>Job Applicants</h1>
+
+  <label for="job-title">Filter by Job Title:</label>
+  <select id="job-title">
+    <option value="all">All</option>
+    <option value="Software-engineer">Software Engineer</option>
+    <option value="web-developer">Web Developer</option>
+    <option value="Mobile App Developer">Mobile App Developer</option>
+    <option value="Frontend Developer">Frontend Developer</option>
+    <option value="Backend Developer">Backend Developer</option>
+    <option value="Full Stack Developer">Full Stack Developer</option>
+    <option value="DevOps Engineer">DevOps Engineer</option>
+    <option value="Data Engineer">Data Engineer</option>
+    <!-- Add more job titles here -->
+  </select>
+  <br>
+  <label for="filtered">Filter by:</label>
+  <select id="filtered">
+    <option value="all">All</option>
+    <option value="Extraverted">Extraverted</option>
+    <option value="Dependable">Dependable</option>
+    <option value="Responsible">Responsible</option>
+    <option value="Serious">Serious</option>
+    <option value="Lively">Lively</option>
+    <!-- Add more filters here -->
+  </select>
+
+  <h2>Job Applicants Count: <span id="applicant-count">0</span></h2>
+
+  <h2>Applicants:</h2>
+  <ul id="applicant-list">
+    <!-- Applicant names will be dynamically added here -->
+  </ul>
+
+  <script>
+    // Get the select elements
+    const jobTitleSelect = document.getElementById('job-title');
+    const filteredSelect = document.getElementById('filtered');
+    // Get the count and applicant list elements
+    const applicantCount = document.getElementById('applicant-count');
+    const applicantList = document.getElementById('applicant-list');
+
+    // Add event listeners to the select elements
+    jobTitleSelect.addEventListener('change', filterApplicants);
+    filteredSelect.addEventListener('change', filterApplicants);
+
+    // Example applicant data
+    const applicants = [
+    //   { name: 'John Doe', jobTitle: 'Software Engineer', filter: 'Extraverted' },
+      { name: 'Jane Smith', jobTitle: 'Web Developer', filter: 'Responsible' },
+      { name: 'Alex Johnson', jobTitle: 'Software Engineer', filter: 'Serious' },
+      { name: 'Emily Davis', jobTitle: 'DevOps Engineer', filter: 'Dependable' },
+    //   { name: 'Uday', jobTitle: 'Data Engineer', filter: 'Lively' },
+    //   { name: 'sri', jobTitle: 'DevOps Engineer', filter: 'Lively' },
+      // Add more applicants here
+    ];
+
+    // Initial filtering and display of applicants
+    filterApplicants();
+
+    function filterApplicants() {
+      const selectedJobTitle = jobTitleSelect.value;
+      const selectedFilter = filteredSelect.value;
+
+      // Clear the applicant list
+      applicantList.innerHTML = '';
+
+      // Filter applicants based on the selected values
+      const filteredApplicants = applicants.filter(applicant => {
+        const matchJobTitle = selectedJobTitle === 'DevOps Engineer' || 'web-developer' || 'Software-engineer' || 'Mobile App Developer' || 'Frontend Developer' || 'Backend Developer' || 'Full Stack Developer' || applicant.jobTitle === selectedJobTitle;
+        const matchFilter = selectedFilter === 'All' ||  applicant.filter === selectedFilter;
+        return matchJobTitle && matchFilter;
+        // const matchJob = selectedJobTitle === 'Software-engineer' || applicant.jobTitle === selectedJobTitle;
+        // const matchFi = selectedFilter === 'Serious' || applicant.filter === selectedFilter;
+        // return matchJob && matchFi;
+      });
+
+      // Update the applicant count
+      applicantCount.textContent = filteredApplicants.length;
+
+      // Display the filtered applicants
+      filteredApplicants.forEach(applicant => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = 'applicantresultdetails.html'; // Change 'result.html' to your desired result page
+        link.textContent = applicant.name;
+        li.appendChild(link);
+        applicantList.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>

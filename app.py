@@ -55,6 +55,10 @@ def jobprediction():
 @app.route('/salaryprediction')
 def salaryprediction():
     return render_template('salaryprediction.html')
+@app.route('/loginRedirect')
+def loginRedirect():
+    return render_template('loginRedirect.html')
+
 if __name__ == '__main__':
     app.debug =  True
     app.run()
