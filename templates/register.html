@@ -86,7 +86,7 @@
         }
       
         /* Register Button */
-        .registerbtn {
+        button {
           width: 100%;
           padding:  10px;
           font-size: 20px;
@@ -98,7 +98,7 @@
         }
       
         /* Register Button Hover */
-        .registerbtn:hover {
+        button:hover {
           background-color:lightgrey;
 
         }
@@ -125,9 +125,8 @@
       <title>User Register</title>
   </head>
   <body>
+    <form action="/register" method="POST">
     <h1>User Register</h1>
-
-    <form method="post" action="home.html">
     <label for="email"><b>Email</b></label><br>
     <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
 
@@ -136,8 +135,9 @@
 
     <label for="password-reenter"><b>Re-Enter Password</b></label><br>
     <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
-    
-    <a href="/home" class = "registerbtn">Register</a>
+    <button type ="submit" >Register</button>
+    <!-- <a href="/home" class = "registerbtn">Register</a> -->
+
     </form>
     </div>
     

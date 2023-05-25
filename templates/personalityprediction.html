@@ -42,7 +42,7 @@
     </style>
 </head>
 <body>
-    <form action = "{{ url_for('result' ,name= sName,cv=cv,list = [openness,neuroticism,conscientiousness,agreeableness,extraversion])}}" method ="POST">
+    <form action = "{{ url_for('result' )}}" method ="POST">
         <label for="sName">Applicant Name:</label>
         <input type="text" id="sName" name="sName"required="required"><br><br>
         
@@ -75,7 +75,7 @@
         <label for="extraversion">How Outgoing and Social Interaction You Like (Extraversion):</label>
         <input type="text" id="extraversion" name="extraversion" placeholder="1-10" required="required"><br><br>
         
-        <input type="submit" value="Submit" onclick="predict()">
+        <input type="submit" value="Submit">
     </form>  
 </body>
 </html>

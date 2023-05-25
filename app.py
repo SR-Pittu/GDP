@@ -97,8 +97,10 @@ mongo = PyMongo(app)
 
 # Database
 client = MongoClient('mongodb://localhost:27017/')
-db = client.careerpredictor
-db.careerpredictordata
+db = client['careerpredictor']
+users_collection = db['users']
+users_collection.insert_one({'username': 'test', 'password': '123'})
+
 
 
 # Decorators
@@ -115,29 +117,46 @@ def login_required(f):
 def home():
     return render_template('home.html')
     
-@app.route('/login', methods=['POST','GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    # users = mongo.db.users
-    # login_user = users.find_one({'name' : request.form['username']})
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-    # if login_user:
-    #     if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
-    #         session['username'] = request.form['username']
-    #         return redirect(url_for('dashboard'))
+        # Query the MongoDB collection for the username and password
+        user = db['users'].find_one({'username': username, 'password': password})
 
-    # return 'Invalid username/password combination'
-     return render_template('login.html')
+        if user:
+            # Successful login
+            return redirect('dashboard')
+        else:
+            # Invalid credentials
+            return render_template('login.html', error='Invalid username or password')
 
+    return render_template('login.html')
 
-@app.route('/register', methods=['POST', 'GET'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form['email']
+        password = request.form['password']
+        password1 = request.form['password-reenter']
+        if password == password1 :
+            if db['users'].find_one({'email': username}):
+                return render_template('register.html', error='Username already exists')
+                # Insert the new user into the MongoDB collection
+            else:
+                db['users'].insert_one({'username': username, 'password': password1})
+                return redirect('/login')
+        return render_template('register.html',error='passwords should match')
     return render_template('register.html')
+
 
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/personalityprediction', methods=['POST','GET'])
+@app.route('/personalityprediction', methods=['POST','GET','PUT'])
 def personalityprediction():
     
     a =  request.form.get('sName')
@@ -148,11 +167,11 @@ def personalityprediction():
         model = train_model()
         model.train()
         
-    return render_template('personalityprediction.html')
+    return render_template('personalityprediction.html',name=a,cv=b,list=c)
 # if __name__ == '__main__':
     
 #     app.run()
-@app.route('/result',methods = ['GET','POST'])
+@app.route('/result',methods = ['POST'])
 def result():
     if __name__ == "__main__":
         model =  personalityprediction()       
@@ -172,6 +191,10 @@ def salaryprediction():
 @app.route('/loginRedirect')
 def loginRedirect():
     return render_template('loginRedirect.html')
+
+@app.route('/registerRedirect')
+def registerRedirect():
+    return render_template('registerRedirect.html')
 
 if __name__ == '__main__':
     app.debug =  True
