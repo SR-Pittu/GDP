@@ -9,27 +9,61 @@
         <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-          
+          <style>
+             body {
+            background-color:lavenderblush;
+            color:blueviolet;
+        }
+        
+        label {
+            display: inline-block;
+            width: 600px;
+        }
+        
+        input[type="text"], input[type="number"] {
+            width: 200px;
+        }
+        
+        input[type="file"] {
+            padding: 10px;
+            background-color:darkcyan;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]{
+            padding: 4px;
+            width: 30%;
+            border: 1px;
+            justify-content: center;
+            background-color:cornsilk;
+            color:aliceblue;
+            font-size: large;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          </style>
         </head>
         
         <body>
         
         <div class="container">
         <div class="login">
-              
-             <!-- Main Input For Receiving Query to our ML -->
-            <form action="{{ url_for('predict')}}"method="post">
-                <input type="text" name="YearsExperience" placeholder="YearsExperience" required="required" />
         
+          
+             <!-- Main Input For Receiving Query to our ML -->
+             <label>Full Name</label>
+                <input type="text" name="Full Name" placeholder="enter your full name" required="required" />
+        <br>
                 <label for="cv">Upload Resume:</label>
                 <input type="file" id="cv" name="cv"><br><br>
                 <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
-            </form>
+          
         
            <br>
            <br>
-           {{ prediction_text }}
-        
+                 
          </div>
         
          </div>
