@@ -99,7 +99,7 @@ mongo = PyMongo(app)
 client = MongoClient('mongodb://localhost:27017/')
 db = client['careerpredictor']
 users_collection = db['users']
-users_collection.insert_one({'username': 'test', 'password': '123'})
+users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
 
 
 
@@ -195,6 +195,14 @@ def loginRedirect():
 @app.route('/registerRedirect')
 def registerRedirect():
     return render_template('registerRedirect.html')
+
+@app.route('/employeeRegister')
+def employeeRegister():
+    return render_template('employeeRegister.html')
+
+@app.route('/loginEmployee')
+def loginEmployee():
+    return render_template('loginEmployee.html')
 
 if __name__ == '__main__':
     app.debug =  True

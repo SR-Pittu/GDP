@@ -86,7 +86,7 @@
         }
       
         /* Register Button */
-        button {
+        .registerbtn {
           width: 100%;
           padding:  10px;
           font-size: 20px;
@@ -98,7 +98,7 @@
         }
       
         /* Register Button Hover */
-        button:hover {
+        .registerbtn:hover {
           background-color:lightgrey;
 
         }
@@ -109,23 +109,21 @@
           margin-top: 10px;
         }
 
-        body{
-          /* background-image: url('register.jpg'); */
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-          font-family: Arial, sans-serif;
-          background-color: rgb(250, 151, 11, 0.571);
-        }
+      body{
+      background-image: url('career5.jpg');
+      background-color: rgb(240, 239, 239);;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      }
       </style>
 
-      <form action="action_page.php">
-      <div class="container">
       
       <title>User Register</title>
   </head>
   <body>
-    <form action="/register" method="POST">
+    <form method="POST" action="/register" >
     <h1>User Register</h1>
     <label for="email"><b>Email</b></label><br>
     <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
