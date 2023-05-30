@@ -1,47 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- <style>
-      h1   {color:darkmagenta}
-      title {color: darkblue;}
-      p    {color: red;}
-      label {color: darkblue;}
-      a {color:seagreen;}
-      button {color:darksalmon;}
-      input[type=text], input[type=password]{
-        color:blueviolet;
-
-       }
-
-       body {
-        
-         background-color: gray; 
-        background-image: url('register.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      font-family: Arial, sans-serif; 
-       
-        height: 100%;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-       .content {
-        margin-top: auto;
-       }
-       
-       .action_page.php{
-        width: 400px; /* Adjust the width as per your preference */
-        margin: 0 auto; /* Centers the form horizontally */
-       }
-
-      </style> -->
-
-      <style>
+    
+<style>
         /* Container */
         .container {
           width: 500px;
@@ -110,7 +71,7 @@
         }
 
       body{
-      background-image: url('career5.jpg');
+      background-image: url('career.jpg');
       background-color: rgb(240, 239, 239);;
       background-size: cover;
       background-repeat: no-repeat;
@@ -119,12 +80,15 @@
       }
       </style>
 
+      <form action="action_page.php">
+      <div class="container">
       
-      <title>User Register</title>
+      <title>Register</title>
   </head>
   <body>
-    <form method="POST" action="/register" >
-    <h1>User Register</h1>
+    <h1>Register</h1>
+
+    <form method="post" action="home.html">
     <label for="email"><b>Email</b></label><br>
     <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
 
@@ -133,9 +97,7 @@
 
     <label for="password-reenter"><b>Re-Enter Password</b></label><br>
     <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
-    <button type ="submit" >Register</button>
-    <!-- <a href="/home" class = "registerbtn">Register</a> -->
-
+    <a href="/home" class = "registerbtn">Register</a>
     </form>
     </div>
     
