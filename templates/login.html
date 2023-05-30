@@ -3,7 +3,7 @@
 <head>
   <title>Login</title>
   <style>
-     body {
+      body {
       background-image: url('img.jpg');
       background-size: cover;
       background-repeat: no-repeat;
@@ -38,11 +38,11 @@
       border-radius: 3px;
     }
 
-    a {
+    button {
       
       align-items: center;
-      width: 200%;
-      padding: 10px;
+      width: 100%;
+      padding: 5px;
       background-color:hotpink;
       color:aliceblue;
       font-size: large;
@@ -50,7 +50,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     /* input[type="submit"]:hover {
       background-color:darkred;
     } */
@@ -62,15 +61,19 @@
   <!-- {% if error %}
     <p>{{ error }}</p>
   {% endif %} -->
-  <form method="post" action="/login">
-    <label for="username">Username:</label>
+  <form method="POST" action="/login">
+    <div class="form-group">
+    <label for="username">Username</label>
     <input type="text" id="username" name="username" required>
-    
-    <label for="password">Password:</label>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
     <input type="password" id="password" name="password" required>
+  </div>
     <br>
     <br>
-    <a href="/dashboard.html" class = "button">Log in</a>
+    <button type ="submit" >Log in</button>
+    <!-- <a href="/dashboard" class = "button">Log in</a> -->
   </form>
 </body>
 </html>

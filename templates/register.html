@@ -109,25 +109,22 @@
           margin-top: 10px;
         }
 
-        body{
-          /* background-image: url('register.jpg'); */
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-          font-family: Arial, sans-serif;
-          background-color: rgb(250, 151, 11, 0.571);
-        }
+      body{
+      background-image: url('career5.jpg');
+      background-color: rgb(240, 239, 239);;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      }
       </style>
 
-      <form action="action_page.php">
-      <div class="container">
       
       <title>User Register</title>
   </head>
   <body>
+    <form method="POST" action="/register" >
     <h1>User Register</h1>
-
-    <form method="post" action="home.html">
     <label for="email"><b>Email</b></label><br>
     <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
 
@@ -136,8 +133,9 @@
 
     <label for="password-reenter"><b>Re-Enter Password</b></label><br>
     <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
-    
-    <a href="/home" class = "registerbtn">Register</a>
+    <button type ="submit" >Register</button>
+    <!-- <a href="/home" class = "registerbtn">Register</a> -->
+
     </form>
     </div>
     

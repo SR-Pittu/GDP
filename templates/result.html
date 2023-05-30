@@ -49,13 +49,11 @@
     </style>
 </head>
 <body>
-    <div id="container">
-        <h1 id="title">Result - Personality Prediction</h1>
-        <label class="label">Name: <span id="name"></span></label>
-        <label class="label">Age: <span id="age"></span></label>
-        <!-- Other labels for data keys here -->
-        <label id="personality"></label>
-        <button id="exitBtn">Exit</button>
-    </div>
+    <body>
+        <form action = "{{url_for('result',name= sName,cv=cv,list = [openness,neuroticism,conscientiousness,agreeableness,extraversion])}}"></form>
+        <h1>Predicted Personality</h1>
+        <label>Name: {{ sname }}</label>
+        <label>Age: {{ cv }}</label>
+       </body>
 </body>
 </html>
