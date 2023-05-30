@@ -91,15 +91,18 @@ app = Flask(__name__)
 # regressor=pickle.load(pickleFile)
 # model = pickle.load(open(model1.pkl))
 # app.config['MONGO_DBNAME'] = 'carrerpredictorlogin'
-app.config['MONGO_URI'] = 'mongodb+srv://S555600:sobha1809@careerpredictor.ltr6ht6.mongodb.net/?retryWrites=true&w=majority'
-
+app.config['MONGO_URI'] = 'mongodb+srv://S555600:sobha1809@careerpredictor.olitidl.mongodb.net/?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
 # Database
 client = MongoClient('mongodb://localhost:27017/')
 db = client['careerpredictor']
 users_collection = db['users']
-users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
+employee_collection = db['organization']
+db['users'].users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
+db['organization'].employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
+
+
 
 
 
@@ -135,6 +138,25 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/loginEmployee', methods=['GET', 'POST'])
+def loginEmployee():
+    if request.method == 'POST':
+        organization = request.form['organization']
+        username = request.form['username']
+        password = request.form['password']
+
+        # Query the MongoDB collection for the username and password
+        user = db['organization'].find_one({organization :'organization' ,'username': username, 'password': password})
+
+        if user:
+            # Successful login
+            return redirect('dashboard')
+        else:
+            # Invalid credentials
+            return render_template('loginEmployee.html', error='Invalid username or password')
+
+    return render_template('loginEmployee.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -151,6 +173,22 @@ def register():
         return render_template('register.html',error='passwords should match')
     return render_template('register.html')
 
+@app.route('/employeeRegister', methods=['GET', 'POST'])
+def employeeRegister():
+    if request.method == 'POST':
+        organization = request.form['organization']
+        username = request.form['email']
+        password = request.form['password']
+        password1 = request.form['password-reenter']
+        if password == password1 :
+            if db['organization'].find_one({'email': username}):
+                return render_template('register.html', error='Username already exists')
+                # Insert the new user into the MongoDB collection
+            else:
+                db['organization'].insert_one({'username': username, 'password': password1})
+                return redirect('/login')
+        return render_template('employeeRegister.html',error='passwords should match')
+    return render_template('employeeRegister.html')
 
 @app.route('/dashboard')
 def dashboard():
@@ -196,13 +234,6 @@ def loginRedirect():
 def registerRedirect():
     return render_template('registerRedirect.html')
 
-@app.route('/employeeRegister')
-def employeeRegister():
-    return render_template('employeeRegister.html')
-
-@app.route('/loginEmployee')
-def loginEmployee():
-    return render_template('loginEmployee.html')
 
 if __name__ == '__main__':
     app.debug =  True
