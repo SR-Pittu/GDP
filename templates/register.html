@@ -79,23 +79,22 @@
       font-family: Arial, sans-serif;
       }
       </style>
-    <script>
-      function validateForm() {
-        var password = document.getElementById("password").value;
-        var reenteredPassword = document.getElementById("password-reenter").value;
-        var errorMessage = document.getElementById("password-error");
-    
-        if (password !== reenteredPassword) {
-          errorMessage.innerHTML = "Password and Re-Entered Password do not match.";
-          return false;
-        } else {
-          errorMessage.innerHTML = "";
-          return true;
-        }
-      }
-    </script>
 
-      <form action="action_page.php">
+<script>
+  function validateForm() {
+    var password = document.getElementById("password").value;
+    var passwordReenter = document.getElementById("password-reenter").value;
+
+    if (password !== passwordReenter) {
+      document.getElementById("error-message").innerText =
+        "Passwords do not match";
+      return false;
+
+    }
+  }
+</script>
+
+
       <div class="container">
       
       <title>Employee Register</title>
@@ -112,8 +111,9 @@
 
     <label for="password-reenter"><b>Re-Enter Password</b></label><br>
     <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
-    <span id="password-error" class="error-message"></span><br><br>
+  
     <a href="/login" class = "registerbtn">Register</a>
+    <div id="error-message" class="error-message"></div>
     </form>
 
     
