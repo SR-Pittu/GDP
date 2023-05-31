@@ -99,10 +99,26 @@
     <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
     <a href="/home" class = "registerbtn">Register</a>
     </form>
-    </div>
-    
-    
 
-      
+    <!-- Registration success and error messages -->
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $password = $_POST['password'];
+      $reenteredPassword = $_POST['password-reenter'];
+
+      if ($password !== $reenteredPassword) {
+        echo '<p class="error-message">Password and Re-Entered Password do not match.</p>';
+      } else {
+        // Proceed with the registration process
+        // Check if registration is successful (you can modify this condition based on your requirements)
+        $isRegistrationSuccessful = true;
+
+        if ($isRegistrationSuccessful) {
+          echo '<p class="success-message">Registration successful!</p>';
+        }
+      }
+    }
+
+    </div>   
   </body>
 </html>

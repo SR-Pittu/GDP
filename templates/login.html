@@ -54,6 +54,11 @@
       background-color:darkred;
     } */
   </style>
+  <script>
+    function displayIncorrectPasswordPopup() {
+      alert("Incorrect password");
+    }
+  </script>
   <!-- <link rel ="stylesheet" href="style.css"> -->
 </head>
 <body>
@@ -61,6 +66,11 @@
   <!-- {% if error %}
     <p>{{ error }}</p>
   {% endif %} -->
+  <form method="POST" action="/login" onsubmit="displayIncorrectPasswordPopup()">
+    <div class="form-group">
+  <!-- <link rel ="stylesheet" href="style.css"> -->
+  <h1>Login</h1>
+  
   <form method="POST" action="/login">
     <div class="form-group">
     <label for="username">Username</label>
