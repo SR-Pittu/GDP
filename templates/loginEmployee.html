@@ -77,7 +77,19 @@
       /* background-color: rgb(250, 151, 11, 0.571); */
     }
   </style>
-
+  <script>
+    function displayIncorrectPasswordPopup() {
+      alert("Incorrect password");
+    }
+  </script>
+  </head>
+  <body>
+    <h1>Employee Login</h1>
+    <!-- {% if error %}
+      <p>{{ error }}</p>
+    {% endif %} -->
+    <form method="POST" action="/login" onsubmit="displayIncorrectPasswordPopup()">
+      <div class="form-group">
   <form action="action_page.php">
   <div class="container">
   
@@ -98,10 +110,6 @@
 <button type ="submit" >Log in</button>
 <!-- <a href="/home" class = "registerbtn">Login</a> -->
 </form>
-</div>
-
-
-
-  
+</div>  
 </body>
 </html>

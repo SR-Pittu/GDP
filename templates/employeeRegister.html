@@ -78,6 +78,22 @@
         }
       </style>
 
+<script>
+  function validateForm() {
+    var password = document.getElementById("password").value;
+    var reenteredPassword = document.getElementById("password-reenter").value;
+    var errorMessage = document.getElementById("password-error");
+
+    if (password !== reenteredPassword) {
+      errorMessage.innerHTML = "Password and Re-Entered Password do not match.";
+      return false;
+    } else {
+      errorMessage.innerHTML = "";
+      return true;
+    }
+  }
+</script>
+
       <form action="action_page.php">
       <div class="container">
       
@@ -98,9 +114,13 @@
 
     <label for="password-reenter"><b>Re-Enter Password</b></label><br>
     <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
-    
+    <span id="password-error" class="error-message"></span><br><br>
     <a href="/home" class = "registerbtn">Register</a>
     </form>
+
+    <!-- Registration success and error messages -->
+    
+
     </div>
     
     
