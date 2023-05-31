@@ -80,44 +80,45 @@
       }
       </style>
 
-<script>
-  function validateForm() {
-    var password = document.getElementById("password").value;
-    var passwordReenter = document.getElementById("password-reenter").value;
-
-    if (password !== passwordReenter) {
-      document.getElementById("error-message").innerText =
-        "Passwords do not match";
-      return false;
-
-    }
-  }
-</script>
-
 
       <div class="container">
       
       <title>Employee Register</title>
-  </head>
-  <body>
-    <h1>Employee Register</h1>
-
-    <form method="post" action="home.html">
-    <label for="email"><b>Email</b></label><br>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
-
-    <label for="password"><b>Password</b></label><br>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required><br><br>
-
-    <label for="password-reenter"><b>Re-Enter Password</b></label><br>
-    <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
+      <script>
+        function validateForm() {
+          var password = document.getElementById("password").value;
+          var passwordReenter = document.getElementById("password-reenter").value;
   
-    <a href="/login" class = "registerbtn">Register</a>
-    <div id="error-message" class="error-message"></div>
-    </form>
-
-    
-
-    </div>   
-  </body>
-</html>
+          if (password !== passwordReenter) {
+            document.getElementById("error-message").innerText =
+              "Passwords do not match";
+            return false;
+          } else {
+            // Redirect to login page
+            window.location.href = "/login";
+            return false; // Prevent form submission
+          }
+        }
+      </script>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Employee Register</h1>
+  
+        <form method="post" onsubmit="return validateForm()">
+          <label for="email"><b>Email</b></label><br>
+          <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
+  
+          <label for="password"><b>Password</b></label><br>
+          <input type="password" placeholder="Enter Password" name="password" id="password" required><br><br>
+  
+          <label for="password-reenter"><b>Re-Enter Password</b></label><br>
+          <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
+  
+          <button type="submit" class="registerbtn">Register</button>
+  
+          <div id="error-message" class="error-message"></div>
+        </form>
+      </div>
+    </body>
+  </html>
