@@ -54,37 +54,59 @@
       background-color:darkred;
     } */
   </style>
-  <script>
-    function displayIncorrectPasswordPopup() {
-      alert("Incorrect password");
-    }
-  </script>
-  <!-- <link rel ="stylesheet" href="style.css"> -->
-</head>
-<body>
-  <h1>Employer Login</h1>
-  <!-- {% if error %}
-    <p>{{ error }}</p>
-  {% endif %} -->
-  <form method="POST" action="/login" onsubmit="displayIncorrectPasswordPopup()">
-    <div class="form-group">
-  <!-- <link rel ="stylesheet" href="style.css"> -->
-  <h1>Employer Login</h1>
-  
-  <form method="POST" action="/login">
-    <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-  </div>
-    <br>
-    <br>
-    <button type ="submit" >Log in</button>
-    <!-- <a href="/dashboard" class = "button">Log in</a> -->
-  </form>
-</body>
-</html>
-
+   </head>
+   <body>
+     <div class="container">
+       <h1>Login</h1>
+ 
+       <form method="post" onsubmit="return validateForm()">
+         <label for="email"><b>Email</b></label><br>
+         <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
+ 
+         <label for="password"><b>Password</b></label><br>
+         <input type="password" placeholder="Enter Password" name="password" id="password" required><br><br>
+ 
+         <button type="submit" class="loginbtn">Login</button>
+ 
+         <div id="error-message" class="error-message"></div>
+       </form>
+     </div>
+ 
+     <script>
+       // Simulated registration data
+       var registeredUsers = [
+         { email: "example@example.com", password: "password123" },
+         // Add more registered users here if needed
+       ];
+ 
+       function validateForm() {
+         var email = document.getElementById("email").value;
+         var password = document.getElementById("password").value;
+ 
+         // Find the registered user with the same email
+         var registeredUser = registeredUsers.find(function (user) {
+           return user.email === email;
+         });
+ 
+         if (registeredUser) {
+           // If a user with the given email is found, check the password
+           if (registeredUser.password === password) {
+             // Successful login
+             window.location.href = "/dashboard";
+             return false; // Prevent form submission
+           } else {
+             // Incorrect password
+             document.getElementById("error-message").innerText =
+               "Incorrect password";
+             return false;
+           }
+         } else {
+           // User with the given email is not found
+           document.getElementById("error-message").innerText =
+             "Email not registered";
+           return false;
+         }
+       }
+     </script>
+   </body>
+ </html>
