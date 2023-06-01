@@ -3,17 +3,21 @@
 <head>
   <title>Login</title>
   <style>
-      body {
-      background-image: url('img.jpg');
+    body {
+      background-image: url('career.jpg');
+      background-color: rgb(240, 239, 239);
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
       font-family: Arial, sans-serif;
+      margin: 50px;
+      padding: 50px;
     }
 
     h1 {
       text-align: center;
-      color:brown;   
+      margin-bottom: 20px;
+      color: brown;
     }
 
     form {
@@ -24,40 +28,45 @@
     }
 
     label {
-      display: block;
-      margin-bottom: 10px;
-      color:black;
+      font-weight: bold;
+      color: black;
     }
 
+    /* Inputs */
     input[type="text"],
     input[type="password"] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 10px;
-      border: 2px solid  pink;
-      border-radius: 3px;
+      margin-bottom: 20px;
+      border: 1px solid brown;
+      border-radius: 4px;
+      box-sizing: border-box;
+      color: black;
     }
 
     button {
-      
       align-items: center;
       width: 100%;
       padding: 5px;
-      background-color:hotpink;
-      color:aliceblue;
+      background-color:brown;
+      color:white;
       font-size: large;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    /* input[type="submit"]:hover {
-      background-color:darkred;
-    } */
+    
+    button:hover {
+      /* Hover styles */
+      color: white;
+      background-color: rgb(190, 0, 0);
+      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    }
   </style>
    </head>
    <body>
      <div class="container">
-       <h1>Login</h1>
+       <h1>Employee Login</h1>
  
        <form method="post" onsubmit="return validateForm()">
          <label for="email"><b>Email</b></label><br>

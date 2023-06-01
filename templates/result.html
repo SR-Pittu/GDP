@@ -3,10 +3,16 @@
 <head>
     <title>Predicted Personality</title>
     <style>
-        body {
-            background-color: white;
-            font-family: Arial, sans-serif;
-        }
+    body {
+      background-image: url('career.jpg');
+      background-color: rgb(240, 239, 239);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 100px;
+      padding: 100px;
+    }
 
         #container {
             text-align: center;
@@ -20,14 +26,20 @@
             margin-bottom: 10px;
         }
 
-        .label {
-            display: block;
-            color: black;
-            text-align: left;
-            width: 60%;
-            margin: 0 auto;
-            padding: 5px;
-        }
+     
+    /* Title */
+    h1 {
+      
+      margin-bottom: 20px;
+      color: brown;
+    }
+
+    /* Labels */
+    label {
+      font-weight: bold;
+      color: black;
+    }
+
 
         #personality {
             text-align: left;
@@ -50,10 +62,11 @@
 </head>
 <body>
     <body>
+        
         <form action = "{{url_for('result',name= sName,cv=cv,list = [openness,neuroticism,conscientiousness,agreeableness,extraversion])}}"></form>
         <h1>Predicted Personality</h1>
         <label>Name: {{ sname }}</label>
         <label>Age: {{ cv }}</label>
-       </body>
+       
 </body>
 </html>

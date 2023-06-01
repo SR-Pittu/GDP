@@ -1,108 +1,102 @@
-<style>
-        /* Container */
-        .container {
-          width: 500px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-      
-        /* Form */
-        form {
-          margin-bottom: 30px;
-        }
-      
-        /* Title */
-        h1 {
-          text-align: center;
-          margin-bottom: 20px;
-          color: darkmagenta;
-        }
-      
-        /* Labels */
-        label {
-          font-weight: bold;
-          color:darkslateblue;
-        }
+<!DOCTYPE html>
+<html>
 
-      
-        /* Inputs */
-        input[type="text"],
-        input[type="password"] {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-          color:blueviolet;
-        }
-      
-        .button-container {
-        display: flex;
-        justify-content: center;
-        }
-      
-        /* Register Button */
-        .registerbtn {
-          width: 100%;
-          padding:  10px;
-          font-size: 20px;
-          background-color:beige;
-          color:darkolivegreen;
-          border: none;
-          border-radius: 2px;
-          cursor: pointer;
-        }
-      
-        /* Register Button Hover */
-        .registerbtn:hover {
-          background-color:lightgrey;
-
-        }
-        /* Error Message */
-        .error-message {
-          color: red;
-          font-weight: bold;
-          margin-top: 10px;
-        }
-
-        body{
-          /* background-image: url('register.jpg'); */
-          background-image: url('career.jpg');
-          background-color: rgb(240, 239, 239);;;
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-          font-family: Arial, sans-serif;
-          /* background-color: rgb(250, 151, 11, 0.571); */
-        }
-      </style>
-
-<script>
-  function validateForm() {
-    var password = document.getElementById("password").value;
-    var reenteredPassword = document.getElementById("password-reenter").value;
-    var errorMessage = document.getElementById("password-error");
-
-    if (password !== reenteredPassword) {
-      errorMessage.innerHTML = "Password and Re-Entered Password do not match.";
-      return false;
-    } else {
-      errorMessage.innerHTML = "";
-      return true;
+<head>
+  <title>Empyoyer Register</title>
+  <style>
+    body {
+      background-image: url('career.jpg');
+      background-color: rgb(240, 239, 239);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      padding: 10px;
     }
-  }
-</script>
 
-      <form action="action_page.php">
-      <div class="container">
-      
-      <title>Employer Register</title>
-  </head>
-  <body>
-    <h1>Employer Register</h1>
+    .button {
+      align-items: center;
+      width: 100%;
+      padding: 5px;
+      background-color:brown;
+      color:white;
+      font-size: large;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      /* Hover styles */
+      color: white;
+      background-color: rgb(190, 0, 0);
+      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    }
 
-    <form method="post" action="home.html">
+    /* Container */
+    .container {
+      width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Title */
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: brown;
+    }
+
+    /* Labels */
+    label {
+      font-weight: bold;
+      color: black;
+    }
+
+    /* Inputs */
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid brown;
+      border-radius: 4px;
+      box-sizing: border-box;
+      color: black;
+    }
+
+    /* Error Message */
+    .error-message {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+
+  <script>
+    function validateForm() {
+      var password = document.getElementById("password").value;
+      var reenteredPassword = document.getElementById("password-reenter").value;
+      var errorMessage = document.getElementById("password-error");
+
+      if (password !== reenteredPassword) {
+        errorMessage.innerHTML = "Password and Re-Entered Password do not match.";
+        return false;
+      } else {
+        errorMessage.innerHTML = "";
+        return true;
+      }
+    }
+  </script>
+
+  <form action="action_page.php">
+    <div class="container">
+</head>
+
+<body>
+  <h1>Employer Register</h1>
+
+  <form method="post" action="home.html">
     <label for="email"><b>Organization Name</b></label><br>
     <input type="text" placeholder="Enter Name" name="email" id="Name" required><br><br>
 
@@ -113,18 +107,17 @@
     <input type="password" placeholder="Enter Password" name="password" id="password" required><br><br>
 
     <label for="password-reenter"><b>Re-Enter Password</b></label><br>
-    <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter" required><br><br>
-    <span id="password-error" class="error-message"></span><br><br>
-    <a href="/loginEmployee" class = "registerbtn">Register</a>
-    </form>
+    <input type="password" placeholder="Re-Enter Password" name="password-reenter" id="password-reenter"
+      required><br><br>
+    <span id="password-error" class="error-message"></span>
+    <a href="/loginEmployee" class="button">Register</a>
+  </form>
 
-    <!-- Registration success and error messages -->
-    
+  <!-- Registration success and error messages -->
 
-    </div>
-    
-    
 
-      
-  </body>
+  </div>
+
+</body>
+
 </html>
