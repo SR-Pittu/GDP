@@ -7,8 +7,7 @@ import tkinter.font as font
 from functools import partial
 from pyresparser import ResumeParser
 from sklearn import datasets, linear_model 
-from flask import Flask, render_template
-from flask import url_for, request, session, redirect
+from flask import url_for, request, session, redirect, Flask, render_template
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 import bcrypt
