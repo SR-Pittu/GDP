@@ -90,8 +90,8 @@ app = Flask(__name__)
 # regressor=pickle.load(pickleFile)
 # model = pickle.load(open(model1.pkl))
 # app.config['MONGO_DBNAME'] = 'carrerpredictorlogin'
-app.config['MONGO_URI'] = 'mongodb+srv://S555600:sobha1809@careerpredictor.olitidl.mongodb.net/?retryWrites=true&w=majority'
-mongo = PyMongo(app)
+# app.config['MONGO_URI'] = 'mongodb+srv://S555600:sobha1809@careerpredictor.olitidl.mongodb.net/?retryWrites=true&w=majority'
+# mongo = PyMongo(app)
 
 # Database
 # myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -107,9 +107,9 @@ db = client['careerpredictor']
 users_collection = db['users']
 employee_collection = db['organization']
 users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
-users_collection.create_index("email", unique=True)
+# users_collection.create_index("email", unique=True)
 employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
-employee_collection.create_index("email", unique=True)
+# employee_collection.create_index("email", unique=True)
 
 
 
