@@ -94,12 +94,22 @@ app.config['MONGO_URI'] = 'mongodb+srv://S555600:sobha1809@careerpredictor.oliti
 mongo = PyMongo(app)
 
 # Database
+# myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+# mydb = myclient['MyArtGalleryDB'] 
+# print(myclient.list_database_names())
+# mycol = mydb['ArtCollection'] 
+# myart = mydb['ArtistCollection']
+# print(mydb.list_collection_names())
+# mycol.create_index("email", unique=True)
+
 client = MongoClient('mongodb://localhost:27017/')
 db = client['careerpredictor']
 users_collection = db['users']
 employee_collection = db['organization']
-db['users'].users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
-db['organization'].employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
+users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
+users_collection.create_index("email", unique=True)
+employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
+employee_collection.create_index("email", unique=True)
 
 
 
@@ -145,7 +155,7 @@ def loginEmployee():
         password = request.form['password']
 
         # Query the MongoDB collection for the username and password
-        user = db['organization'].find_one({organization :'organization' ,'username': username, 'password': password})
+        user = employee_collection.find_one({organization :'organization' ,'username': username, 'password': password})
 
         if user:
             # Successful login
@@ -162,14 +172,14 @@ def register():
         username = request.form['email']
         password = request.form['password']
         password1 = request.form['password-reenter']
-        if password == password1 :
-            if db['users'].find_one({'email': username}):
-                return render_template('register.html', error='Username already exists')
+        if password != password1 :
+            error_message = 'Passwords do not match.'
+            print(error_message)
+            return render_template('register.html', error='Passwords do not match')
                 # Insert the new user into the MongoDB collection
-            else:
-                db['users'].insert_one({'username': username, 'password': password1})
-                return redirect('/login')
-        return render_template('register.html',error='passwords should match')
+        else:
+            users_collection.insert_one({'username': username, 'password': password1})
+            return redirect('/login')
     return render_template('register.html')
 
 @app.route('/employeeRegister', methods=['GET', 'POST'])
