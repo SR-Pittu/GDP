@@ -106,10 +106,10 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['careerpredictor']
 users_collection = db['users']
 employee_collection = db['organization']
-users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
-# users_collection.create_index("email", unique=True)
-employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
-# employee_collection.create_index("email", unique=True)
+# users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
+users_collection.create_index("username", unique=True)
+# employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
+employee_collection.create_index("username", unique=True)
 
 
 
@@ -132,13 +132,15 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        print('yessss')
+        username = request.form['email']
         password = request.form['password']
-
+        print(username)
+        print(password)
         # Query the MongoDB collection for the username and password
-        user = db['users'].find_one({'username': username, 'password': password})
-
-        if user:
+        user = users_collection.find_one({'username': username})
+        print(user)
+        if user['username']==username and user['password'] == password:
             # Successful login
             return redirect('dashboard')
         else:
@@ -170,8 +172,11 @@ def loginEmployee():
 def register():
     if request.method == 'POST':
         username = request.form['email']
+        print(username)
         password = request.form['password']
+        print(password)
         password1 = request.form['password-reenter']
+        print(password1)
         if password != password1 :
             error_message = 'Passwords do not match.'
             print(error_message)
@@ -229,6 +234,7 @@ def result():
 
 @app.route('/jobprediction')
 def jobprediction():
+    
     return render_template('jobprediction.html')
 
 @app.route('/salaryprediction')
