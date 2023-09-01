@@ -67,7 +67,7 @@
       color: black;
     }
   </style>
-  <script>
+  <!-- <script>
     function trackApplication() {
       var name = document.getElementById('name').value;
       var position = document.getElementById('position').value;
@@ -103,30 +103,23 @@
       xhr.send(formData);
     }
     
-  </script>
-  <form action="action_page.php">
+  </script> -->
+  <!-- <form action="action_page.php"> -->
     <div class="container">
 </head>
 <body>
   
-  <h1>Application Tracking and Career Prediction System</h1>
+  <h1>Job Title Prediction</h1>
 
-  <form method="post" action="home.html">
+  <form method="POST" >
     <label for="name"><b>Name</b></label><br>
     <input type="text" id="name" placeholder="Enter Name" required><br><br>
 
-    <label for="position"><b>Position</b></label><br>
-    <input type="text" placeholder="Enter the you are apply for" id="position" required><br><br>
-
-    <label for="experience"><b>Experience</b></label><br>
-    <input type="number" placeholder="Enter your years of experience" id="experience" required><br><br>
-
-    <label for="education"><b>Education</b></label><br>
-    <input type="text" placeholder="education" name="password-reenter" id="education" required><br><br>
+    <label for="cv">Upload Resume:</label>
+    <input type="file" id="cv" name="cv" required="required"><br><br>
   
-    <a onclick="trackApplication()" class="button">Submit</a>
+    <a class="button">Submit</a>
   </form>
-
   
 </body>
 </html>
