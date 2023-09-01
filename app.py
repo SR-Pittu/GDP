@@ -1,4 +1,6 @@
 import os
+import PyPDF2 
+import io
 import pandas as pd
 import numpy as np
 from tkinter import *
@@ -17,6 +19,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from collections import Counter
 import nltk
+from werkzeug.utils import secure_filename
+import fitz 
 nltk.download('punkt')
  
 
@@ -213,6 +217,12 @@ def result():
 
 app = Flask(__name__)
 
+predefined_roles = {
+    "Software Engineer": ["programming", "algorithms", "python", "java"],
+    "Data Analyst": ["data analysis", "SQL", "Excel", "statistics"],
+    # Add more roles and keywords
+}
+
 def extract_keywords(text):
     tokens = word_tokenize(text)
     keywords = [word.lower() for word in tokens if word.lower() not in stopwords.words('english')]
@@ -234,19 +244,18 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in {'doc', 'docx', 'pdf'}
 
 def extract_text_from_pdf(pdf_bytes):
+    pdf_file = io.BytesIO(pdf_bytes)
+    pdf_reader = PyPDF2.PdfReader(pdf_file)
     text = ""
-    pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-    num_pages = pdf_document.page_count
-    for page_num in range(num_pages):
-        page = pdf_document[page_num]
-        text += page.get_text()
-    pdf_document.close()
-    return text       
+
+    for page in pdf_reader.pages:
+        text += page.extract_text()
+
+    return text    
 
 @app.route('/jobprediction', methods=['POST','GET','PUT'])
 def jobprediction():
     b =   request.form.get('cv')
-    # d = 
     print("yes")
     if b and allowed_file(b.filename):
         resume_bytes = b.read()
