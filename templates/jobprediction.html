@@ -111,12 +111,12 @@
   
   <h1>Job Title Prediction</h1>
 
-  <form method="POST" >
+  <form method="POST" action = "{{ url_for('jobprediction' )}}">
     <label for="name"><b>Name</b></label><br>
     <input type="text" id="name" placeholder="Enter Name" required><br><br>
 
     <label for="cv">Upload Resume:</label>
-    <input type="file" id="cv" name="cv" required="required"><br><br>
+    <input type="file" id="cv" required="required"><br><br>
   
     <a class="button">Submit</a>
   </form>

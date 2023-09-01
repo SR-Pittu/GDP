@@ -19,12 +19,9 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from collections import Counter
 import nltk
-from werkzeug.utils import secure_filename
-import fitz 
-nltk.download('punkt')
- 
+from werkzeug.utils import secure_filename 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 class train_model:
     
@@ -231,12 +228,10 @@ def extract_keywords(text):
 def match_job_roles(keywords, predefined_roles):
     keyword_counts = Counter(keywords)
     matched_roles = []
-
     for role, role_keywords in predefined_roles.items():
         match_count = sum(keyword_counts[key] for key in role_keywords)
         if match_count > 0:
             matched_roles.append((role, match_count))
-    
     return matched_roles
 
 def allowed_file(filename):
@@ -247,30 +242,31 @@ def extract_text_from_pdf(pdf_bytes):
     pdf_file = io.BytesIO(pdf_bytes)
     pdf_reader = PyPDF2.PdfReader(pdf_file)
     text = ""
-
     for page in pdf_reader.pages:
         text += page.extract_text()
-
     return text    
 
 @app.route('/jobprediction', methods=['POST','GET','PUT'])
 def jobprediction():
-    b =   request.form.get('cv')
-    print("yes")
-    if b and allowed_file(b.filename):
-        resume_bytes = b.read()
-        resume_text = ""
-        if b.filename.endswith(".pdf"):
-            resume_text = extract_text_from_pdf(resume_bytes)
-            print(resume_text)
-        elif b.filename.endswith((".doc", ".docx")):
-            resume_text = resume_bytes.decode("utf-8")   
+    if request.method == 'POST':   
+        a=   request.form.get('name')     
+        print(a)
+        print("yes")
+        b =   request.form.get('cv')
+        if b and allowed_file(b.filename):
+            resume_bytes = b.read()
+            resume_text = ""
+            if b.filename.endswith(".pdf"):
+                resume_text = extract_text_from_pdf(resume_bytes)
+                print(resume_text)
+            elif b.filename.endswith((".doc", ".docx")):
+                resume_text = resume_bytes.decode("utf-8")   
         
-        keywords = extract_keywords(resume_text)
-        matched_roles = match_job_roles(keywords, predefined_roles)
-        return render_template("jobprediction.html", matched_roles=matched_roles)
+            keywords = extract_keywords(resume_text)
+            matched_roles = match_job_roles(keywords, predefined_roles)
+            return render_template("jobprediction.html", matched_roles=matched_roles)
 
-    return render_template("jobprediction.html", matched_roles=None)
+    return render_template("jobprediction.html")
 
 
 @app.route('/salaryprediction')
@@ -287,5 +283,7 @@ def registerRedirect():
 
 
 if __name__ == '__main__':
-    app.debug =  True
+    # app.run(port=8080)
     app.run()
+    app.debug =  True
+    
