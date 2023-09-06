@@ -1,27 +1,17 @@
-import os
-import PyPDF2 
-import io
 import pandas as pd
-import numpy as np
 from tkinter import *
-from tkinter import filedialog
-import tkinter.font as font
-from functools import partial
 from pyresparser import ResumeParser
-from sklearn import datasets, linear_model 
-from flask import url_for, request, session, redirect, Flask, render_template
-from flask_pymongo import PyMongo
+from sklearn import linear_model 
+from flask import request, session, redirect, Flask, render_template
 from pymongo import MongoClient
 import spacy
 from functools import wraps
-import pickle
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from collections import Counter
-import nltk
-from werkzeug.utils import secure_filename 
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+    app.run(host='localhost', port=9874)
+    app.debug =  True
 
 class train_model:
     
@@ -93,21 +83,21 @@ db = client['careerpredictor']
 users_collection = db['users']
 employee_collection = db['organization']
 # users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
-users_collection.create_index("username", unique=True)
+# users_collection.create_index("username", unique=True)
 # employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
-employee_collection.create_index("username", unique=True)
+# employee_collection.create_index("username", unique=True)
 
 
 
-# Decorators
-def login_required(f):
-  @wraps(f)
-  def wrap(*args, **kwargs):
-    if 'logged_in' in session:
-      return f(*args, **kwargs)
-    else:
-      return redirect('/')  
-  return wrap
+# # Decorators
+# def login_required(f):
+#   @wraps(f)
+#   def wrap(*args, **kwargs):
+#     if 'logged_in' in session:
+#       return f(*args, **kwargs)
+#     else:
+#       return redirect('/')  
+#   return wrap
 
 @app.route('/')
 def home():
@@ -125,10 +115,8 @@ def login():
         user = users_collection.find_one({'username': username})
         print(user)
         if user['username']==username and user['password'] == password:
-            # Successful login
             return redirect('dashboard')
         else:
-            # Invalid credentials
             return render_template('login.html', error='Invalid username or password')
 
     return render_template('login.html')
@@ -192,6 +180,8 @@ def employeeRegister():
 def dashboard():
     return render_template('dashboard.html')
 
+
+
 @app.route('/personalityprediction', methods=['POST','GET','PUT'])
 def personalityprediction():    
     a =  request.form.get('sName')
@@ -201,7 +191,7 @@ def personalityprediction():
     model = train_model()
     model.train()      
     return render_template('personalityprediction.html',name=a,cv=b,list=c)
-# if __name__ == '__main__':
+# # if __name__ == '__main__':
     
 #     app.run()
 @app.route('/result',methods = ['POST'])
@@ -214,58 +204,11 @@ def result():
 
 app = Flask(__name__)
 
-predefined_roles = {
-    "Software Engineer": ["programming", "algorithms", "python", "java"],
-    "Data Analyst": ["data analysis", "SQL", "Excel", "statistics"],
-    # Add more roles and keywords
-}
-
-def extract_keywords(text):
-    tokens = word_tokenize(text)
-    keywords = [word.lower() for word in tokens if word.lower() not in stopwords.words('english')]
-    return keywords
-
-def match_job_roles(keywords, predefined_roles):
-    keyword_counts = Counter(keywords)
-    matched_roles = []
-    for role, role_keywords in predefined_roles.items():
-        match_count = sum(keyword_counts[key] for key in role_keywords)
-        if match_count > 0:
-            matched_roles.append((role, match_count))
-    return matched_roles
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'doc', 'docx', 'pdf'}
-
-def extract_text_from_pdf(pdf_bytes):
-    pdf_file = io.BytesIO(pdf_bytes)
-    pdf_reader = PyPDF2.PdfReader(pdf_file)
-    text = ""
-    for page in pdf_reader.pages:
-        text += page.extract_text()
-    return text    
-
 @app.route('/jobprediction', methods=['POST','GET','PUT'])
 def jobprediction():
-    if request.method == 'POST':   
-        a=   request.form.get('name')     
-        print(a)
-        print("yes")
-        b =   request.form.get('cv')
-        if b and allowed_file(b.filename):
-            resume_bytes = b.read()
-            resume_text = ""
-            if b.filename.endswith(".pdf"):
-                resume_text = extract_text_from_pdf(resume_bytes)
-                print(resume_text)
-            elif b.filename.endswith((".doc", ".docx")):
-                resume_text = resume_bytes.decode("utf-8")   
-        
-            keywords = extract_keywords(resume_text)
-            matched_roles = match_job_roles(keywords, predefined_roles)
-            return render_template("jobprediction.html", matched_roles=matched_roles)
-
+    # if request.method == 'POST':   
+    #     a=   request.form.get('name')     
+    #     print(a)
     return render_template("jobprediction.html")
 
 
@@ -283,7 +226,7 @@ def registerRedirect():
 
 
 if __name__ == '__main__':
-    # app.run(port=8080)
-    app.run()
+    app.run(host='0.0.0.0', debug=True)
+    app.run(host='localhost', port=9874)
     app.debug =  True
     
