@@ -7,32 +7,20 @@ from pymongo import MongoClient
 import spacy
 from functools import wraps
 
-app = Flask(__name__)
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
-    app.run(host='localhost', port=9874)
-    app.debug =  True
-
-class train_model:
-    
+class train_model:    
     def train(self):
         data =pd.read_csv('sampledata/training_dataset.csv')
         array = data.values
-
         for i in range(len(array)):
             if array[i][0]=="Male":
                 array[i][0]=1
             else:
                 array[i][0]=0
-
         df=pd.DataFrame(array)
-
         maindf =df[[0,1,2,3,4,5,6]]
         mainarray=maindf.values
-
         temp=df[7]
-        train_y =temp.values
-        
+        train_y =temp.values        
         self.mul_lr = linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg',max_iter =1000)
         self.mul_lr.fit(mainarray, train_y)
        
@@ -53,8 +41,8 @@ class train_model:
             for i,item in enumerate(data):
                 str_list+=item+", "
             return str_list
-        else:   return str(data)
-
+        else:   
+            return str(data)
 nlp = spacy.load("en_core_web_sm")
 def prediction_result(aplcnt_name, cv_path, personality_values):
     applicant_data = {"Candidate Name":aplcnt_name,  "CV Location":cv_path} 
@@ -76,33 +64,35 @@ def prediction_result(aplcnt_name, cv_path, personality_values):
     for key in data.keys():
         if data[key] is not None:
             print('{} : {}'.format(key,data[key]))
-       
-    
+
+app = Flask(__name__)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+    app.run(host='localhost', port=9874)
+    app.debug =  True
+
 client = MongoClient('mongodb://localhost:27017/')
 db = client['careerpredictor']
 users_collection = db['users']
 employee_collection = db['organization']
 # users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
-# users_collection.create_index("username", unique=True)
+users_collection.create_index("username", unique=True)
 # employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
-# employee_collection.create_index("username", unique=True)
+employee_collection.create_index("username", unique=True)
 
-
-
-# # Decorators
-# def login_required(f):
-#   @wraps(f)
-#   def wrap(*args, **kwargs):
-#     if 'logged_in' in session:
-#       return f(*args, **kwargs)
-#     else:
-#       return redirect('/')  
-#   return wrap
 
 @app.route('/')
 def home():
     return render_template('home.html')
-    
+
+@app.route('/loginRedirect')
+def loginRedirect():
+    return render_template('loginRedirect.html')
+
+@app.route('/registerRedirect')
+def registerRedirect():
+    return render_template('registerRedirect.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -180,53 +170,27 @@ def employeeRegister():
 def dashboard():
     return render_template('dashboard.html')
 
-
-
 @app.route('/personalityprediction', methods=['POST','GET','PUT'])
-def personalityprediction():    
-    a =  request.form.get('sName')
-    # print(len(features))
-    b =   request.form.get('cv')
-    c = [request.form.get('openness'),request.form.get('neuroticism'),request.form.get('conscientiousness'),request.form.get('agreeableness'),request.form.get('extraversion')]
-    model = train_model()
-    model.train()      
-    return render_template('personalityprediction.html',name=a,cv=b,list=c)
-# # if __name__ == '__main__':
-    
-#     app.run()
+def personalityprediction():  
+    if request.method == 'POST':
+        print('YESSSSS')
+        a =  request.form.get('sName')
+        print(a)
+        b =   request.form.get('cv')
+        print(b)
+        c = [request.form.get('openness'),request.form.get('neuroticism'),request.form.get('conscientiousness'),request.form.get('agreeableness'),request.form.get('extraversion')]
+        print(c)
+        model = train_model()
+        model.train()      
+        return render_template('personalityprediction.html',name=a,cv=b,list=c)
+    if request.method == 'GET':
+        return render_template('personalityprediction.html')
+
 @app.route('/result',methods = ['POST'])
 def result():
     model =  personalityprediction()       
-        # a = model.request.form.get('sName')
-        # b= model.request.form.get('cv')
-        # c = [model.request.form.get('openness'),model.request.form.get('neuroticism'),model.request.form.get('conscientiousness'),model.request.form.get('agreeableness'),model.request.form.get('extraversion')]
+    a = model.request.form.get('sName')
+    b= model.request.form.get('cv')
+    c = [model.request.form.get('openness'),model.request.form.get('neuroticism'),model.request.form.get('conscientiousness'),model.request.form.get('agreeableness'),model.request.form.get('extraversion')]
     return render_template('result.html')
 
-app = Flask(__name__)
-
-@app.route('/jobprediction', methods=['POST','GET','PUT'])
-def jobprediction():
-    # if request.method == 'POST':   
-    #     a=   request.form.get('name')     
-    #     print(a)
-    return render_template("jobprediction.html")
-
-
-@app.route('/salaryprediction')
-def salaryprediction():
-    return render_template('salaryprediction.html')
-
-@app.route('/loginRedirect')
-def loginRedirect():
-    return render_template('loginRedirect.html')
-
-@app.route('/registerRedirect')
-def registerRedirect():
-    return render_template('registerRedirect.html')
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
-    app.run(host='localhost', port=9874)
-    app.debug =  True
-    
