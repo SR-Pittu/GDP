@@ -1,13 +1,21 @@
 import pandas as pd
-from tkinter import *
+from tkinter import Tk
 from pyresparser import ResumeParser
 from sklearn import linear_model 
-from flask import request, session, redirect, Flask, render_template
+from flask import request, session, redirect, Flask, render_template, flash
 from pymongo import MongoClient
 import spacy
 from functools import wraps
+import os
+from werkzeug.utils import secure_filename
 
-class train_model:    
+UPLOAD_FOLDER = '/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+class train_model:  
+    # def __init__(self):
+    #     self.mul_lr = None
+
     def train(self):
         data =pd.read_csv('sampledata/training_dataset.csv')
         array = data.values
@@ -20,20 +28,25 @@ class train_model:
         maindf =df[[0,1,2,3,4,5,6]]
         mainarray=maindf.values
         temp=df[7]
-        train_y =temp.values        
+        trainy = temp
         self.mul_lr = linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg',max_iter =1000)
-        self.mul_lr.fit(mainarray, train_y)
+        self.mul_lr.fit(mainarray, trainy)
        
     def test(self, test_data):
         try:
+            nlp = spacy.load("en_core_web_sm")
             test_predict=list()
             for i in test_data:
                 test_predict.append(int(i))
+            print(test_predict)
+            # w = 
+            # print(w)
             y_pred = self.mul_lr.predict([test_predict])
+            print(y_pred)
             return y_pred
         except:
             print("All Factors For Finding Personality Not Entered!")
-    def check_type(data):
+    def check_type(self,data):
         if type(data)==str or type(data)==str:
             return str(data).title()
         if type(data)==list or type(data)==tuple:
@@ -43,10 +56,11 @@ class train_model:
             return str_list
         else:   
             return str(data)
-nlp = spacy.load("en_core_web_sm")
+
 def prediction_result(aplcnt_name, cv_path, personality_values):
     applicant_data = {"Candidate Name":aplcnt_name,  "CV Location":cv_path} 
     age = personality_values[1]
+    print(age)
     print("\n############# Candidate Entered Data #############\n")
     print(applicant_data, personality_values)
     model = train_model()
@@ -55,9 +69,10 @@ def prediction_result(aplcnt_name, cv_path, personality_values):
     print(personality)
     data = ResumeParser(cv_path).get_extracted_data()
     try:
-        del data['name']
-        if len(data['mobile_number'])<10:
-            del data['mobile_number']
+        if data is not None:
+            del data['name']
+            if len(data['mobile_number'])<10: # type: ignore
+                del data['mobile_number']
     except:
         pass
     print("\n############# Resume Parsed Data #############\n")
@@ -66,9 +81,9 @@ def prediction_result(aplcnt_name, cv_path, personality_values):
             print('{} : {}'.format(key,data[key]))
 
 app = Flask(__name__)
+app.config[UPLOAD_FOLDER] = 'uploads'
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
-    app.run(host='localhost', port=9874)
     app.debug =  True
 
 client = MongoClient('mongodb://localhost:27017/')
@@ -104,8 +119,9 @@ def login():
         # Query the MongoDB collection for the username and password
         user = users_collection.find_one({'username': username})
         print(user)
-        if user['username']==username and user['password'] == password:
-            return redirect('dashboard')
+        if user is not None:
+            if user['username']==username and user['password'] == password:
+                return redirect('dashboard')
         else:
             return render_template('login.html', error='Invalid username or password')
 
@@ -175,22 +191,46 @@ def personalityprediction():
     if request.method == 'POST':
         print('YESSSSS')
         a =  request.form.get('sName')
-        print(a)
-        b =   request.form.get('cv')
-        print(b)
-        c = [request.form.get('openness'),request.form.get('neuroticism'),request.form.get('conscientiousness'),request.form.get('agreeableness'),request.form.get('extraversion')]
-        print(c)
+        # print(a)
+        q = request.form.get('cv')
+        b =   request.files['cv']
+        # b1.save('uploads/' + b1.filename)
+        # b.save('uploads/' + b.filename)
+        g = request.form.get('gender')
+        print(g)
+        # print(b)
+        c = [request.form.get('gender'),request.form.get('age'),request.form.get('openness'),request.form.get('neuroticism'),request.form.get('conscientiousness'),request.form.get('agreeableness'),request.form.get('extraversion')]
+        # print(c)
         model = train_model()
         model.train()      
-        return render_template('personalityprediction.html',name=a,cv=b,list=c)
-    if request.method == 'GET':
-        return render_template('personalityprediction.html')
+        return render_template('result.html',name=a,cv=b,list=c)
+    return render_template('personalityprediction.html')
 
-@app.route('/result',methods = ['POST'])
+@app.route('/result',methods = ['POST','GET'])
 def result():
-    model =  personalityprediction()       
-    a = model.request.form.get('sName')
-    b= model.request.form.get('cv')
-    c = [model.request.form.get('openness'),model.request.form.get('neuroticism'),model.request.form.get('conscientiousness'),model.request.form.get('agreeableness'),model.request.form.get('extraversion')]
+    if request.method == 'POST':
+        # model = personalityprediction()   
+        a1 = request.form.get('sName')
+        print(a1)
+        print('in Here ')
+        if request.form.get('gender')=='female':
+            r = 0
+        else:
+            r=1
+        ag = request.form.get('age')
+        q1 = request.form.get('openness')
+        q2 = request.form.get('neuroticism')
+        q3 = request.form.get('conscientiousness')
+        q4 = request.form.get('agreeableness')
+        q5 = request.form.get('extraversion')
+        c1 = [r,ag,q1,q2,q3,q4,q5 ]
+        print(c1)
+        b1 = request.files.get('cv')
+        d = request.form.get('cv')
+        path = "uploads/" + d # type: ignore
+        b1.save(path)
+        print('came here')     
+        s = prediction_result(a1,b1,c1)
+        return render_template('result.html')
     return render_template('result.html')
 
