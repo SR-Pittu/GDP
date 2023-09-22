@@ -104,22 +104,22 @@
     }
     
   </script> -->
-  <!-- <form action="action_page.php"> -->
+  <!-- <form action=""> -->
     <div class="container">
 </head>
 <body>
   
   <h1>Job Title Prediction</h1>
 
-  <form method="POST" action = "{{ url_for('jobprediction' )}}">
+  <form method="POST" action = "/jobprediction" enctype="multipart/form-data">
     <label for="name"><b>Name</b></label><br>
-    <input type="text" id="name" placeholder="Enter Name" required><br><br>
+    <input type="text" id="name" name="name" placeholder="Enter Name" required="required"><br><br>
 
     <label for="cv">Upload Resume:</label>
-    <input type="file" id="cv" required="required"><br><br>
+    <input type="file" id="cv" required="required" /><br><br>
   
-    <a class="button">Submit</a>
+    <input type="submit" class="button" value="Submit">
   </form>
-  
+        
 </body>
 </html>

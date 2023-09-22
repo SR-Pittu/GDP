@@ -1,51 +1,89 @@
 import pandas as pd
 from tkinter import Tk
 from pyresparser import ResumeParser
+from resume_parser import resumeparse
 from sklearn import linear_model 
 from flask import request, session, redirect, Flask, render_template, flash
 from pymongo import MongoClient
 import spacy
 from functools import wraps
+from fileinput import filename
 import os
 from werkzeug.utils import secure_filename
+import PyPDF2
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-class train_model:  
-    # def __init__(self):
-    #     self.mul_lr = None
+def extract_text_from_pdf(pdf_path):
+    text = ''
+    with open(pdf_path, 'rb') as pdf_file:
+        pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+        for page_num in range(pdf_reader.numPages):
+            page = pdf_reader.getPage(page_num)
+            text += page.extractText()
 
+    return text
+
+def extract_job_title(resume_path):
+    nlp = spacy.load("en_core_web_sm")
+    text = extract_text_from_pdf(resume_path)
+
+    # Process the text using spaCy
+    doc = nlp(text)
+
+    # Define a list of common job title keywords
+    job_title_keywords = ["data scientist", "software engineer", "business analyst", "product manager"]
+
+    # Extract job titles
+    job_titles = []
+    for token in doc:
+        if any(keyword in token.text.lower() for keyword in job_title_keywords):
+            job_titles.append(token.text)
+
+    # If multiple job titles are found, you can choose the first one
+    if job_titles:
+        return job_titles[0]
+    else:
+        return "Job title not found"
+
+class train_model: 
+    def __init__(self):
+        self.mul_lr = linear_model.LogisticRegression()
     def train(self):
-        data =pd.read_csv('sampledata/training_dataset.csv')
+        data = pd.read_csv('sampledata/training_dataset.csv')
         array = data.values
         for i in range(len(array)):
-            if array[i][0]=="Male":
-                array[i][0]=1
+            if array[i][0] == "Male":
+                array[i][0] = 1
             else:
-                array[i][0]=0
-        df=pd.DataFrame(array)
-        maindf =df[[0,1,2,3,4,5,6]]
-        mainarray=maindf.values
-        temp=df[7]
+                array[i][0] = 0
+        df = pd.DataFrame(array)
+        maindf = df[[0, 1, 2, 3, 4, 5, 6]]
+        mainarray = maindf.values
+        temp = df[7]
         trainy = temp
-        self.mul_lr = linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg',max_iter =1000)
+        self.mul_lr = linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg', max_iter=1000)
         self.mul_lr.fit(mainarray, trainy)
-       
+
     def test(self, test_data):
-        try:
-            nlp = spacy.load("en_core_web_sm")
-            test_predict=list()
-            for i in test_data:
-                test_predict.append(int(i))
-            print(test_predict)
-            # w = 
-            # print(w)
-            y_pred = self.mul_lr.predict([test_predict])
-            print(y_pred)
-            return y_pred
-        except:
-            print("All Factors For Finding Personality Not Entered!")
+        nlp = spacy.load("en_core_web_sm")
+        test_predict = list()
+        for i in test_data:
+            test_predict.append(int(i))
+        print(test_predict)
+        y_pred = self.mul_lr.predict([test_predict])
+        print(y_pred)
+        return y_pred
+# In this modified code, the mul_lr attribute is initialized in the __init__ constructor of the train_model class. This should resolve the attribute error you were encountering. Make sure to update your code accordingly.
+
+
+
+
+
+
+        # except:
+        #     print("All Factors For Finding Personality Not Entered!")
     def check_type(self,data):
         if type(data)==str or type(data)==str:
             return str(data).title()
@@ -57,10 +95,10 @@ class train_model:
         else:   
             return str(data)
 
+nlp = spacy.load("en_core_web_sm")
 def prediction_result(aplcnt_name, cv_path, personality_values):
     applicant_data = {"Candidate Name":aplcnt_name,  "CV Location":cv_path} 
     age = personality_values[1]
-    print(age)
     print("\n############# Candidate Entered Data #############\n")
     print(applicant_data, personality_values)
     model = train_model()
@@ -69,10 +107,9 @@ def prediction_result(aplcnt_name, cv_path, personality_values):
     print(personality)
     data = ResumeParser(cv_path).get_extracted_data()
     try:
-        if data is not None:
-            del data['name']
-            if len(data['mobile_number'])<10: # type: ignore
-                del data['mobile_number']
+        del data['name']
+        if len(data['mobile_number'])<10: # type: ignore
+            del data['mobile_number']
     except:
         pass
     print("\n############# Resume Parsed Data #############\n")
@@ -83,6 +120,9 @@ def prediction_result(aplcnt_name, cv_path, personality_values):
 app = Flask(__name__)
 app.config[UPLOAD_FOLDER] = 'uploads'
 if __name__ == '__main__':
+    # Initialize the model outside of route functions
+    model = train_model()
+    model.train()
     app.run(host='0.0.0.0', debug=True)
     app.debug =  True
 
@@ -206,13 +246,14 @@ def personalityprediction():
         return render_template('result.html',name=a,cv=b,list=c)
     return render_template('personalityprediction.html')
 
-@app.route('/result',methods = ['POST','GET'])
+@app.route('/result',methods = ['POST','GET','PUT'])
 def result():
     if request.method == 'POST':
         # model = personalityprediction()   
         a1 = request.form.get('sName')
         print(a1)
         print('in Here ')
+        model = train_model()
         if request.form.get('gender')=='female':
             r = 0
         else:
@@ -225,12 +266,71 @@ def result():
         q5 = request.form.get('extraversion')
         c1 = [r,ag,q1,q2,q3,q4,q5 ]
         print(c1)
-        b1 = request.files.get('cv')
-        d = request.form.get('cv')
-        path = "uploads/" + d # type: ignore
-        b1.save(path)
-        print('came here')     
+        b1 = request.files['cv']
+        b1.save(b1.filename) # type: ignore
+        print('came here')    
+        # model.train() 
         s = prediction_result(a1,b1,c1)
+        print(s)
         return render_template('result.html')
     return render_template('result.html')
 
+@app.route('/jobprediction', methods=['POST','GET','PUT'])
+def jobprediction():
+    if request.method == 'POST':   
+        # print("Hello")
+        name = request.form.get('name')     
+        print(name)
+        b = request.files['cv']
+        print(b)
+        b.save(b.filename) # type: ignore
+        model = jobtrain()
+        model.train_job()
+        s = model.predict_job(b)
+        print(s)
+        return render_template("jobtitleresult.html",name=name,s=s)
+    return render_template("jobprediction.html")
+
+@app.route('/jobtitleresult',methods = ['POST'])
+def jobtitleresult():
+    return render_template("jobtitleresult.html")
+
+@app.route('/salaryprediction',methods = ['POST','GET'])
+def salaryprediction():
+    if request.method == 'POST':
+        resume_path = "path_to_your_resume.pdf"
+        job_title = extract_job_title(resume_path)
+        print("Extracted Job Title:",job_title)
+        return render_template('salaryprediction.html')
+    return render_template('salaryprediction.html')
+
+class jobtrain:
+    def train_job(self):
+        data = pd.read_csv('sampledata/jobtitle.csv')
+        ar = data.values
+        df = pd.DataFrame(ar)
+        tem = df[0]
+        ty = tem
+        maindf = df[[1]]
+        mainar = maindf.values
+        self.mul_lr = linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg', max_iter=1000)
+        self.mul_lr.fit(mainar,ty)
+    
+    def test_job(self,test_data):
+        test_predict = list()
+        print(test_predict)
+        y_pred = self.mul_lr.predict([test_predict])
+        print(y_pred)
+        return y_pred
+    
+    def predict_job(self,cv_path):
+        data = ResumeParser(cv_path).get_extracted_data()
+        str = ""
+        for key in data.keys():
+            if data[key] is not None:
+                str+=key
+                print('{} : {}'.format(key,data[key]))
+        
+        model = jobtrain()
+        model.train_job()
+        jtp = model.test_job(str)
