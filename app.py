@@ -7,8 +7,13 @@ from sklearn import linear_model
 from flask import request, session, redirect, Flask, render_template, flash
 from pymongo import MongoClient
 import spacy
-import os
-import csv
+import numpy as np
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix,accuracy_score
+from sklearn import svm
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -233,17 +238,13 @@ def result():
 
 @app.route('/jobprediction', methods=['POST','GET','PUT'])
 def jobprediction():
-    subprocess.Popen(['streamlit', 'run', 'main.py'])
+    if request.method =='POST':
+        return render_template("jobtitleresult.html",a = predict_job_title_from_cv())
     return render_template("jobprediction.html")
 
 @app.route('/jobtitleresult',methods = ['POST'])
 def jobtitleresult():
     if request.method == 'POST':
-        a= request.form.get('name')
-        cv = request.files['cv']
-        cv.save(cv.filename) # type: ignore
-        predicted_title = predict_job_title_from_cv(cv)
-        print("Predicted Job Title:", predicted_title)
         return render_template('jobtitleresult.html')
     return render_template("jobtitleresult.html")
 
@@ -268,15 +269,73 @@ def extract_skills_from_cv(cv_text):
 
     return resume_tokens
 
-def predict_job_title_from_cv(cv_text):
-    # Extract skills from the user's CV
-    nlp = spacy.load('en_core_web_sm')
-    # dataset = pd.read_csv('sampledata/jobtitle.csv', encoding='utf-8',on_bad_lines='skip')
-    # dataset = []
-    # ifile  = open('sampledata/jobset.csv', "r")
-    # read = csv.reader(ifile)
-    # for row in read :
-    #     print (row) 
-    # f = open("sampledata/jobtitle.csv", "rb")
-    # text = f.read().decode(errors='replace')
+def predict_job_title_from_cv():
+    df = pd.read_csv('sampledata/mldata.csv')
+    df.head()
+    cols = df[["self-learning capability?", "Extra-courses did","Taken inputs from seniors or elders", "worked in teams ever?", "Introvert"]]
+    for i in cols:
+        cleanup_nums = {i: {"yes": 1, "no": 0}}
+        df = df.replace(cleanup_nums)
+    
+
+    mycol = df[["reading and writing skills", "memory capability score"]]
+    for i in mycol:
+        cleanup_nums = {i: {"poor": 0, "medium": 1, "excellent": 2}}
+        df = df.replace(cleanup_nums)
+
+
+    # Label Encoding
+    category_cols = df[['certifications', 'workshops', 'Interested subjects', 'interested career area ', 'Type of company want to settle in?', 
+                        'Interested Type of Books']]
+    for i in category_cols:
+        df[i] = df[i].astype('category')
+        df[i + "_code"] = df[i].cat.codes # type: ignore
+    feed = df[['Logical quotient rating', 'coding skills rating', 'hackathons', 'public speaking points', 'self-learning capability?','Extra-courses did', 
+           'Taken inputs from seniors or elders', 'worked in teams ever?', 'Introvert', 'reading and writing skills', 'memory capability score',  
+            'Interested subjects_code', 'Interested Type of Books_code', 'certifications_code', 
+           'workshops_code', 'Type of company want to settle in?_code',  'interested career area _code',
+             'Suggested Job Role']]
+    
+    # Taking all independent variable columns
+    df_train_x = feed.drop('Suggested Job Role',axis = 1)
+
+    # Target variable column
+    df_train_y = feed['Suggested Job Role']
+
+    # Train-Test Splitting
+    x_train, x_test, y_train, y_test = train_test_split(df_train_x, df_train_y, test_size=0.20, random_state=42)
+
+    #Random Forest Classifier
+    clf3 = RandomForestClassifier(n_estimators=100) 
+    clf3 = clf3.fit(x_train, y_train)
+   
+    categorical_col = df[['self-learning capability?', 'Extra-courses did','reading and writing skills', 'memory capability score', 
+                      'Taken inputs from seniors or elders', 'Management or Technical', 'hard/smart worker', 'worked in teams ever?', 
+                      'Introvert', 'interested career area ']]
+    for i in categorical_col:
+        print(df[i].value_counts(), end="\n\n")
+
+# Taking all independent variable columns
+    df_train_x = feed.drop('Suggested Job Role',axis = 1)
+
+    # Target variable column
+    df_train_y = feed['Suggested Job Role']
+
+    x_train, x_test, y_train, y_test = train_test_split(df_train_x, df_train_y, test_size=0.20, random_state=42)
+
+    dtree = DecisionTreeClassifier(random_state=1)
+    dtree = dtree.fit(x_train, y_train)
+
+    y_pred = dtree.predict(x_test)
+    cm = confusion_matrix(y_test,y_pred)
+    accuracy = accuracy_score(y_test,y_pred)
+    print("confusion matrics=",cm)
+    print("  ")
+    print("accuracy=",accuracy*10)
+    userdata = [['7','6','6','8','3','5','4', '4', '7', '3', '3', '6','8', 
+                    ,'7','4','5','6','8','8']]
+    ynewclass = dtree.predict(userdata)
+    ynew = dtree.predict_proba(userdata)
+    print(ynewclass)
+    return ynewclass
     
