@@ -82,14 +82,13 @@
       background-color: rgb(190, 0, 0);
       box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
     }
-    </style>
-    <form action="action_page.php">
+    </style> 
     <div class="container">
 </head>
 
 <body>
     <h1>Personal Quetions</h1>
-    <form action="{{ url_for('result' )}}" method="POST">
+    <form action="/result" method="POST" enctype="multipart/form-data">
         <label for="sName">Applicant Name:</label>
         <input type="text" id="sName" name="sName" required="required"><br><br>
 
@@ -105,7 +104,7 @@
         <label for="female">Female</label><br><br>
 
         <label for="cv">Upload Resume:</label>
-        <input type="file" id="cv" name="cv" required="required"><br><br>
+        <input type="file" id="cv" name="cv" required="required" /><br><br>
 
         <label for="openness">Enjoy New Experience or Thing (Openness):</label>
         <input type="text" id="openness" name="openness" placeholder="1-10" required="required"><br><br>
@@ -123,7 +122,7 @@
         <label for="extraversion">How Outgoing and Social Interaction You Like (Extraversion):</label>
         <input type="text" id="extraversion" name="extraversion" placeholder="1-10" required="required"><br><br>
 
-        <a class="button">Predict</a>
+        <input type="submit" class="button" value="Predict">
     </form>
 </body>
 
