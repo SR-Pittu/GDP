@@ -11,7 +11,7 @@
       background-position: center;
       font-family: Arial, sans-serif;
       margin: 10px;
-      padding: 10px;
+      padding: 3% 10px;
     }
 
     .button {
@@ -59,7 +59,7 @@
     input[type="password"],
     input[type="number"] {
       width: 100%;
-      padding: 10px;
+      padding:  2% 10px;
       margin-bottom: 20px;
       border: 1px solid brown;
       border-radius: 4px;
@@ -113,81 +113,169 @@
 
   <form method="POST" action = "{{ url_for('jobprediction' )}}">
     <label for="name"><b>Name</b></label><br>
-    <input type="text" id="name" placeholder="Enter Name" required><br><br>
+    <input type="text" id="name" name =  "name" placeholder="Enter Name" required><br><br>
 
-    <label for="Logical Skills">Rate your Logical quotient Skills</label>
-        <input type="text" id="Logical Skills" name="Logical Skills" placeholder="1-10" required="required"><br><br>
+    <label for="LogicalSkills">Rate your Logical quotient Skills</label>
+        <input type="text" id="LogicalSkills" name="LogicalSkills" placeholder="1-10" required="required"><br><br>
 
-        <label for="Coding Skils">Rate your Coding Skills</label>
-        <input type="text" id="Coding Skills" name="Coding Skills" placeholder="1-10" required="required"><br><br>
+        <label for="CodingSkills">Rate your Coding Skills</label>
+        <input type="text" id="CodingSkills" name="CodingSkills" placeholder="1-10" required="required"><br><br>
 
-        <label for="Hackathons">Enter number of Hackathons participated            </label>
-        <input type="text" id="Hackathons" name="Hackathons" placeholder="1-10"
-            required="required"><br><br>
+        <label for="Hackathons">Enter number of Hackathons participated </label>
+        <input type="text" id="Hackathons" name="Hackathons" placeholder="1-10" required="required"><br><br>
 
-        <label for="Public Speaking">Rate Your Public Speaking</label>
-        <input type="text" id="Public Speaking" name="Public Speaking" placeholder="1-10" required="required"><br><br>
+        <label for="PublicSpeaking">Rate Your Public Speaking</label>
+        <input type="text" id="PublicSpeaking" name="PublicSpeaking" placeholder="1-10" required="required"><br><br>
         <label for="j">Self Learning Capability</label>
-        <select id="j">
-        <option value="all">All</option>
+        <select name="j">
         <option value="Yes">Yes</option>
         <option value="No">No</option>
-    </select><br>
+    </select><br><br>
         <label for="j1">Extra courses</label>
-        <select id="j1">
-        <option value="all">All</option>
+        <select name="j1">
         <option value="Yes">Yes</option>
         <option value="No">No</option>
-    </select><br>
+    </select><br><br>
         <label for="j2">Took advice from seniors or elders</label>
-        <select id="j2">
-        <option value="all">All</option>
+        <select name="j2">
         <option value="Yes">Yes</option>
         <option value="No">No</option>
-    </select><br>
+    </select><br><br>
         <label for="j3">Team Co-ordination Skill</label>
-        <select id="j3">
-        <option value="all">All</option>
+        <select name="j3">
         <option value="Yes">Yes</option>
         <option value="No">No</option>
-    </select><br>
+    </select><br><br>
         <label for="j4">Introvert</label>
-        <select id="j4">
-        <option value="all">All</option>
+        <select name="j4">
         <option value="Yes">Yes</option>
         <option value="No">No</option>
-    </select><br>
+    </select><br><br>
         <label for="j5">Reading and writing skills</label>
-        <select id="j5">
-        <option value="all">All</option>
-        <option value="Yes">Poor</option>
-        <option value="No">Medium</option>
-        <option value="No">Excellent</option>
-    </select><br>
+        <select name="j5">
+        <option value="Poor">Poor</option>
+        <option value="Medium">Medium</option>
+        <option value="Excellent">Excellent</option>
+    </select><br><br>
         <label for="j6">Memory capability score</label>
-        <select id="j6">
-        <option value="all">All</option>
-        <option value="Yes">Poor</option>
-        <option value="No">Medium</option>
-        <option value="No">Excellent</option>
-    </select><br>
+        <select name="j6">
+        <option value="Poor">Poor</option>
+        <option value="Medium">Medium</option>
+        <option value="Excellent">Excellent</option>
+    </select><br><br>
         <label for="j7">Smart or Hard Work</label>
-        <select id="j7">
-        <option value="all">All</option>
-        <option value="Yes">Smart</option>
-        <option value="No">Hard</option>
-    </select><br>
+        <select name="j7">
+        <option value="Smart">Smart</option>
+        <option value="Hard">Hard</option>
+    </select><br><br>
         <label for="j8">Management or Techinical Interested Career Area</label>
-        <select id="j8">
-        <option value="all">All</option>
-        <option value="Yes">Management</option>
-        <option value="No">Techinical</option>
-    </select><br>
-        <label for="j9">Interested Career Area</label>
-        <select id="j9">
-        <option value="all">All</option>
+        <select name="j8">
+        <option value="Management">Management</option>
+        <option value="Techinical">Techinical</option>
+    </select><br><br>
+    <label for ="j9">Interested Subjects</label>
+    <select name="j9">
+    <option value="Programming">Programming</option>
+    <option value="Management">Management</option>
+    <option value="Data Engineering">Data Engineering</option>
+    <option value="Networks">Networks</option>
+    <option value="Software Engineering">Software Engineering</option>
+    <option value="Cloud Computing">Cloud Computing</option>
+    <option value="Parallel Computing">Parallel Computing</option>
+    <option value="IOT">IOT</option>
+    <option value="Computer Architecture">Computer Architecture</option>
+    <option value="Hacking">Hacking</option> 
+    </select><br><br>
+    <label for ="j10">Interested Books Category</label>
+    <select name="j10">
+    <option value="Series">Series</option>
+    <option value="Autobiographies">Autobiographies</option>
+    <option value="Travel">Travel</option>
+    <option value="Guide">Guide</option>
+    <option value="Health">Health</option>
+    <option value="Journals">Journals</option>
+    <option value="Anthology">Anthology</option>
+    <option value="Dictionaries">Dictionaries</option>
+    <option value="Prayer Books">Prayer Books</option>
+    <option value="Art">Art</option>
+    <option value="Encyclopedias">Encyclopedias</option>
+    <option value="Religion-spirituality">Religion-spirituality</option>
+    <option value="Action and Adventure">Action and Adventure</option>
+    <option value="Comics">Comics</option>
+    <option value="Horror">Horror</option>
+    <option value="Satire">Satire</option>
+    <option value="Self Help">Self Help</option>
+    <option value="History">History</option>
+    <option value="Cookbooks">Cookbooks</option>
+    <option value="Math">Math</option>
+    <option value="Biographies">Biographies</option>
+    <option value="Drama">Drama</option>
+    <option value="Diaries">Diaries</option>
+    <option value="Science Fiction">Science Fiction</option>
+    <option value="Poetry">Poetry</option>
+    <option value="Romance">Romance</option>
+    <option value="Science">Science</option>
+    <option value="Trilogy">Trilogy</option>
+    <option value="Fantasy">Fantasy</option>
+    <option value="Childrens">Childrens</option>
+    <option value="Mystery">Mystery</option>
+    
+    </select><br><br>
+
+    <label for ="j11">Interested_Type_of_Books</label>
+
+    <select name="j11">
+    <option value="Information security">Information security</option>
+    <option value="Shell Programming">Shell Programming</option>
+    <option value="R Programming">R Programming</option>
+    <option value="Distro Making">Distro Making</option>
+    <option value="Machine Learning">Machine Learning</option>
+    <option value="Full Stack">Full Stack</option>
+    <option value="Hadoop">Hadoop</option>
+    <option value="App Development">App Development</option>
+    <option value="Python">Python</option>
+
+    </select><br><br>
+
+    <label for="j12">Workshops Attended</label>
+
+    <select name="j12">
+    <option value="Testing">Testing</option>
+    <option value="Database Security">Database Security</option>
+    <option value="Game Development">Game Development</option>
+    <option value="Data Science">Data Science</option>
+    <option value="System Designing">System Designing</option>
+    <option value="Hacking">Hacking</option>
+    <option value="Cloud Computing">Cloud Computing</option>
+    <option value="Web Technologies">Web Technologies</option>
+
+    </select><br><br>
+
+    <label for="j13">Type of Company You Want to Settle In</label>
+
+    <select name="j13">
+    <option value="BPA">BPA</option>
+    <option value="Cloud Services">Cloud Services</option>
+    <option value="Product Development">Product Development</option>
+    <option value="Testing and Maintainance Services">Testing and Maintainance Services</option>
+    <option value="SAaS Services">SAaS Services</option>
+    <option value="Web Services">Web Services</option>
+    <option value="Finance">Finance</option>
+    <option value="Sales and Marketing">Sales and Marketing</option>
+    <option value="Product Based">Product Based</option>
+    <option value="Service Based">Service Based</option>
+
+    </select><br><br>        
+        <label for="j14">Interested Career Area</label>
+
+        <select name="j14">
         <option value="Testing">Testing</option>
-        <option value="Data Science">Data Science</option> 
+        <option value="system developer">system developer</option>
+        <option value="Business process analyst">Business process analyst</option>
+        <option value="security">security</option>
+        <option value="developer">developer</option>
+        <option value="cloud computing">cloud computing</option> 
+
         </select>
         <br>
         <input type="submit" class="button" value="Predict">
