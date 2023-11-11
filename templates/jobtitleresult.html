@@ -58,6 +58,18 @@
             cursor: pointer;
             margin-top: 10px;
         }
+    button {
+      background-color: brown;
+      border: none;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 15px 32px;
+      border-radius: 15px;
+    }
     </style>
 </head>
 <body>
@@ -65,8 +77,11 @@
         
         <form action = "{{url_for('jobtitleresult',name= name,cv=cv, )}}">
             <h3>Job that suits for you</h3>
-                <label>Result: {{ a }}</label>
-          </form>
-       
+            <label>Name: {{ name }}</label><br><br>
+            <label>Result: {{ a }}</label>
+          </form><br>
+          <form action="/dashboard" method="get">
+         <button type="submit">Done</button>
+        </form>
 </body>
 </html>

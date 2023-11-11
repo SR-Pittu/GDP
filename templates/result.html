@@ -58,15 +58,31 @@
             cursor: pointer;
             margin-top: 10px;
         }
+    button {
+      background-color: brown;
+      border: none;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 15px 32px;
+      border-radius: 15px;
+    }
     </style>
 </head>
 <body>
+    <h1>Predicted Personality</h1>
     <body>
         
         <form action = "{{url_for('result',name= sName,cv=cv,list = [openness,neuroticism,conscientiousness,agreeableness,extraversion])}}"></form>
-        <h1>Predicted Personality</h1>
-        <label>Name: {{ sname }}</label>
-        <label>Age: {{ cv }}</label>
-       
+        <label>Name: {{ a1 }}</label><br><br>
+        <label>Age: {{ ag }}</label><br><br>
+        <label>Personality Predicted : {{ s[1] }} </label><br><br>
+        <label>Parsed data: {{ s[0] }}</label><br>
+        <form action="/dashboard" method="get">
+            <button type="submit">Done</button>
+        </form>
 </body>
 </html>
