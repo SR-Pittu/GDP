@@ -1,11 +1,17 @@
+import io
+from blinker import receiver_connected
 import pandas as pd
+import os
 from tkinter import Tk
+from cryptography.fernet import Fernet
+from pymongo.errors import DuplicateKeyError
 import subprocess
 from pyresparser import ResumeParser
 from resume_parser import resumeparse
-from sklearn import linear_model 
+from sklearn import linear_model
 from flask import request, session, redirect, Flask, render_template, flash
 from pymongo import MongoClient
+from sklearn.discriminant_analysis import StandardScaler
 import spacy
 import numpy as np
 import seaborn as sns
@@ -19,11 +25,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LogisticRegression
+import pandas as pd
+import spacy
 
-
-class train_model: 
+class train_model:
     def __init__(self):
-        self.mul_lr = linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg', max_iter=1000)
+        self.mul_lr = LogisticRegression(multi_class='multinomial', solver='newton-cg', max_iter=1000)
+
     def train(self):
         data = pd.read_csv('sampledata/training_dataset.csv')
         array = data.values
@@ -34,59 +43,76 @@ class train_model:
                 array[i][0] = 0
         df = pd.DataFrame(array)
         maindf = df[[0, 1, 2, 3, 4, 5, 6]]
-        mainarray = maindf.values
+        mainarray = maindf
         temp = df[7]
-        trainy = temp
-        self.mul_lr.fit(mainarray, trainy)
+        train_y = temp
+        self.mul_lr.fit(mainarray.values, train_y)
+        # arr.reshape(-1,1)
+        # print(self.mul_lr.predict([arr]))
+
 
     def test(self, test_data):
+        model = train_model()
+# Train the logistic regression model
         nlp = spacy.load("en_core_web_sm")
         test_predict = list()
         for i in test_data:
-            test_predict.append(i)
+            test_predict.append(int(i))
         print(test_predict)
-        y_pred = self.mul_lr.predict([test_predict])
-        print(y_pred)
+        # print(self.mul_lr.predict([test_predict]))
+        y_pred=self.mul_lr.predict([test_predict])
+        # print(y_pred)
         return y_pred
 
-    def check_type(self,data):
-        if type(data)==str or type(data)==str:
-            return str(data).title()
-        if type(data)==list or type(data)==tuple:
-            str_list=""
-            for i,item in enumerate(data):
-                str_list+=item+", "
-            return str_list
-        else:   
-            return str(data)
 
-nlp = spacy.load("en_core_web_sm")
 def prediction_result(aplcnt_name, cv_path, personality_values):
     applicant_data = {"Candidate Name":aplcnt_name,  "CV Location":cv_path} 
-    age = personality_values[1]
     print("\n############# Candidate Entered Data #############\n")
     print(applicant_data, personality_values)
     model = train_model()
+    model.train()
     personality = model.test(personality_values)
+    print(personality)
     print("\n############# Predicted Personality #############\n")
     print(personality)
-    data = ResumeParser(cv_path).get_extracted_data()
+    # fp = io.open(cv_path,'r')   
+    print(cv_path) 
+    path = 'uploads/' + cv_path
+    data = ResumeParser(path).get_extracted_data()
+    str = ""
     try:
         del data['name']
         if len(data['mobile_number'])<10: # type: ignore
-            del data['mobile_number']
+            del data['mobile_number'] 
     except:
         pass
     print("\n############# Resume Parsed Data #############\n")
     for key in data.keys():
         if data[key] is not None:
-            print('{} : {}'.format(key,data[key]))
+            str += "\n" + ('{} : {}'.format(key,data[key])) # type: ignore
+    return (str,personality)
+
+def check_type(self,data):
+    if type(data)==str or type(data)==str:
+        return str(data).title()
+    if type(data)==list or type(data)==tuple:
+        str_list=""
+        for i,item in enumerate(data):
+            str_list+=item+", "
+        return str_list
+    else:   
+        return str(data)
+
+nlp = spacy.load("en_core_web_sm")
+
 
 app = Flask(__name__)
+app.secret_key = '1809'
+
 if __name__ == '__main__':
     # Initialize the model outside of route functions
+    app.secret_key = '1809'
     model = train_model()
-    model.train()
     app.run(host='0.0.0.0', debug=True)
     app.debug =  True
 
@@ -95,11 +121,13 @@ db = client['careerpredictor']
 users_collection = db['users']
 employee_collection = db['organization']
 # users_collection.insert_one({'username': 'S555600@nwmissouri.edu', 'password': '123'})
-users_collection.create_index("username", unique=True)
-# employee_collection.insert_one({'organization': 'sample','username':'S555600@nwmissouri.edu','password': '123'})
+# users_collection.create_index("username", unique=True)
+# employee_collection.insert_one({'organization': 'sample','email':'S555600@nwmissouri.edu','password': '123'})
 employee_collection.create_index("username", unique=True)
 
-
+def is_user_logged_in():
+    return 'logged_in' in session
+    
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -125,6 +153,9 @@ def login():
         print(user)
         if user is not None:
             if user['username']==username and user['password'] == password:
+                print("session")
+                session['user_id'] = username
+                print(session['user_id'])
                 return redirect('dashboard')
         else:
             return render_template('login.html', error='Invalid username or password')
@@ -134,16 +165,21 @@ def login():
 @app.route('/loginEmployee', methods=['GET', 'POST'])
 def loginEmployee():
     if request.method == 'POST':
+        print("Sucess")
         organization = request.form['organization']
-        username = request.form['username']
+        print(organization)
+        username = request.form['email']
+        print(username)
         password = request.form['password']
+        print(password)
 
         # Query the MongoDB collection for the username and password
-        user = employee_collection.find_one({organization :'organization' ,'username': username, 'password': password})
+        user = employee_collection.find_one({'organization' :organization ,'email': username, 'password': password})
 
         if user:
             # Successful login
-            return redirect('dashboard')
+            print("Done")
+            return render_template("jobpage.html")
         else:
             # Invalid credentials
             return render_template('loginEmployee.html', error='Invalid username or password')
@@ -163,7 +199,6 @@ def register():
             error_message = 'Passwords do not match.'
             print(error_message)
             return render_template('register.html', error='Passwords do not match')
-                # Insert the new user into the MongoDB collection
         else:
             users_collection.insert_one({'username': username, 'password': password1})
             return redirect('/login')
@@ -172,23 +207,34 @@ def register():
 @app.route('/employeeRegister', methods=['GET', 'POST'])
 def employeeRegister():
     if request.method == 'POST':
+        print('entered here')
         organization = request.form['organization']
+        print(organization)
         username = request.form['email']
+        print(username)
         password = request.form['password']
+        print(password)
         password1 = request.form['password-reenter']
+        print(password1)
         if password == password1 :
-            if db['organization'].find_one({'email': username}):
-                return render_template('register.html', error='Username already exists')
-                # Insert the new user into the MongoDB collection
+            if employee_collection.find_one({'email': username}):
+                return render_template('employeeRegister.html', error='Username already exists')
             else:
-                db['organization'].insert_one({'username': username, 'password': password1})
-                return redirect('/login')
+                employee_collection.insert_one({'organization': organization,'email': username, 'password': password1})
+                return redirect('/loginEmployee')
         return render_template('employeeRegister.html',error='passwords should match')
     return render_template('employeeRegister.html')
 
 @app.route('/dashboard')
 def dashboard():
+    if is_user_logged_in():
+        return render_template('dashboard.html')
     return render_template('dashboard.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('home.html')
 
 @app.route('/personalityprediction', methods=['POST','GET','PUT'])
 def personalityprediction():  
@@ -206,7 +252,6 @@ def personalityprediction():
         c = [request.form.get('gender'),request.form.get('age'),request.form.get('openness'),request.form.get('neuroticism'),request.form.get('conscientiousness'),request.form.get('agreeableness'),request.form.get('extraversion')]
         # print(c)
         model = train_model()
-        model.train()      
         return render_template('result.html',name=a,cv=b,list=c)
     return render_template('personalityprediction.html')
 
@@ -217,7 +262,6 @@ def result():
         a1 = request.form.get('sName')
         print(a1)
         print('in Here ')
-        model = train_model()
         if request.form.get('gender')=='female':
             r = 0
         else:
@@ -231,12 +275,21 @@ def result():
         c1 = [r,ag,q1,q2,q3,q4,q5 ]
         print(c1)
         b1 = request.files['cv']
-        b1.save(b1.filename) # type: ignore
-        print('came here')    
-        # model.train() 
-        s = prediction_result(a1,b1,c1)
+        file_path = os.path.join('uploads/', b1.filename) # type: ignore
+        filename = os.path.basename(file_path)
+        b1.save(file_path)
+        print('came here') 
+        model = train_model()   
+        model.train()
+        s = prediction_result(a1,filename,c1)
         print(s)
-        return render_template('result.html')
+        user = session.get('user_id')
+        print(user)
+        persona =  np.array(s[1])
+        p = persona[0]
+        # users_collection.update({"username": user}, { $set : {"personality" : 1 } } )
+        users_collection.update_one({"username": user}, {"$set": {"Name": a1 ,"personality": p,"Resume": file_path}})
+        return render_template('result.html',a1=a1,ag = ag,s=s )
     return render_template('result.html')
 
 @app.route('/jobprediction', methods=['POST','GET','PUT'])
@@ -308,8 +361,14 @@ def jobprediction():
         print(name)
         b = jobPredict()
         b.train_decision_tree()
-        v = b.predict_decision_tree(categorical_codes)
-        return render_template("jobtitleresult.html",a=v, name= name)
+        a = b.predict_decision_tree(categorical_codes)
+        user = session.get('user_id')
+        print(user)
+        persona =  np.array(a)
+        p = persona[0]
+        # users_collection.update({"username": user}, { $set : {"personality" : 1 } } )
+        users_collection.update_one({"username": user}, {"$set": {"JobTitle Predicted": p}})
+        return render_template("jobtitleresult.html",a=a, name= name)
     return render_template("jobprediction.html")
 
 @app.route('/jobtitleresult',methods = ['POST'])
@@ -317,6 +376,14 @@ def jobtitleresult():
     if request.method == 'POST':
         return render_template('jobtitleresult.html')
     return render_template("jobtitleresult.html")
+
+@app.route('/jobpage',methods = ['GET','POST'])
+def jobpage():
+    if request.method == 'GET':
+        persons = users_collection.find()
+        return render_template('jobpage.html',persons=persons)
+    return render_template("jobpage.html")
+
 
 @app.route('/salaryprediction',methods = ['POST','GET'])
 def salaryprediction():
@@ -436,6 +503,49 @@ class jobPredict:
         print("confusion matrics=",xgb_cm)
         print(xgb_y_pred)
         print("accuracy=",xgb_accuracy*10)
+
+    def svcTrain(self):
+        feed = self.df[['Logical quotient rating', 'coding skills rating', 'hackathons', 'public speaking points', 'self-learning capability?','Extra-courses did', 
+                'Taken inputs from seniors or elders', 'worked in teams ever?', 'Introvert', 'reading and writing skills', 'memory capability score',  
+                'B_hard worker', 'B_smart worker', 'A_Management', 'A_Technical', 'Interested subjects_code', 'Interested Type of Books_code', 'certifications_code', 
+                'workshops_code', 'Type of company want to settle in?_code',  'interested career area _code', 'Suggested Job Role']]
+
+        df_train_x = feed.drop('Suggested Job Role',axis = 1)
+
+        # Target variable column
+        df_train_y = feed['Suggested Job Role']
+    # Split the data into training and testing sets
+        x_train, x_test, y_train, y_test = train_test_split(df_train_x, df_train_y, test_size=0.2, random_state=42)
+
+        svm_classifier = svm.SVC()
+        svm_classifier.fit(x_train, y_train)
+        y_pred = svm_classifier.predict(x_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        print(accuracy*10)
+
+    def rfTrain(self):
+        feed = self.df[['Logical quotient rating', 'coding skills rating', 'hackathons', 'public speaking points', 'self-learning capability?','Extra-courses did', 
+                'Taken inputs from seniors or elders', 'worked in teams ever?', 'Introvert', 'reading and writing skills', 'memory capability score',  
+                'B_hard worker', 'B_smart worker', 'A_Management', 'A_Technical', 'Interested subjects_code', 'Interested Type of Books_code', 'certifications_code', 
+                'workshops_code', 'Type of company want to settle in?_code',  'interested career area _code', 'Suggested Job Role']]
+
+        df_train_x = feed.drop('Suggested Job Role',axis = 1)
+
+        # Target variable column
+        df_train_y = feed['Suggested Job Role']
+    # Split the data into training and testing sets
+        x_train, x_test, y_train, y_test = train_test_split(df_train_x, df_train_y, test_size=0.2, random_state=42)
+
+
+        rf = RandomForestClassifier(random_state = 10)
+        rf.fit(x_train, y_train)
+        rfc_y_pred = rf.predict(x_test)
+        rfc_cm = confusion_matrix(y_test,rfc_y_pred)
+        rfc_accuracy = accuracy_score(y_test,rfc_y_pred)
+        print("confusion matrics=",rfc_cm)
+        print("  ")
+        print("accuracy=",rfc_accuracy*10)
+
     def predict_decision_tree(self, data):
         # Use the self.dtree model to predict job titles for input data
         for i in data:

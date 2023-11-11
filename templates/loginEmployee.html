@@ -73,25 +73,15 @@
       margin-top: 10px;
     }
   </style>
-  <script>
-    function displayIncorrectPasswordPopup() {
-      alert("Incorrect password");
-    }
-  </script>
-
-
-    <form method="POST" action="/login" onsubmit="displayIncorrectPasswordPopup()">
-    <div class="form-group">
-    <form action="action_page.php">
-    <div class="container">
+  
 </head>
 
 <body>
     <h1>Employer Login</h1>
 
-    <form method="post" action="home.html">
-      <label for="email"><b>Organization Name</b></label><br>
-      <input type="text" placeholder="Enter Name" name="Organization" id="Name" required><br><br>
+    <form method="POST">
+      <label for="organization"><b>Organization Name</b></label><br>
+      <input type="text" placeholder="Enter Name" name="organization" id="organization" required><br><br>
 
       <label for="email"><b>Email</b></label><br>
       <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>

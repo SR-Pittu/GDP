@@ -3,18 +3,8 @@
 
 <head>
   <title>dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <style>
-    body {
-      background-image: url('career.jpg');
-      background-color: rgb(240, 239, 239);
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      font-family: Arial, sans-serif;
-      margin: 100px;
-      padding: 100px;
-    }
-
     .button {
       background-color: brown;
       border: none;
@@ -37,7 +27,7 @@
       /* Hover styles */
       color: white;
       background-color: rgb(190, 0, 0);
-      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
     }
 
     .container {
@@ -47,24 +37,42 @@
       height: 100%;
     }
 
-    .head{
-      margin-left: 60px;
+    .head {
+      text-align: center;
       margin-top: -100px;
       margin-bottom: 100px;
+    }
+
+    .navbar {
+      text-align: right;
+      background-color: white;
+      padding: 10px;
+    }
+
+    .navbar a {
+      color: b;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .navbar a :hover{
+      color: purple;
+      text-decoration: none;
+      margin: 0 10px;
     }
   </style>
 </head>
 
 <body>
-  <div class="container-fluid head">
-    <h1 class="welcome">
-    Choose which prediction to make...</h1>
-    </div>
-  <div class="container">
-      <a href="/personalityprediction" class="button">Pesonality Prediction</a>
-      <a href="/jobprediction" class="button">Job Prediction</a>
-      <a href="/salaryprediction" class="button">Salary Prediction</a>
+  <div class="navbar">
+    <a href="/">Log out</a>
   </div>
-</body>
 
+  <h1 class="welcome">Choose which prediction to make...</h1>
+  <div class="container">
+    <a href="/personalityprediction" class="button">Personality Prediction</a>
+    <a href="/jobprediction" class="button">Job Prediction</a>
+    <a href="/salaryprediction" class="button">Salary Prediction</a>
+  </div>
+
+</body>
 </html>

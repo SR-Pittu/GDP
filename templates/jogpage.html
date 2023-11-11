@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Page</title>
+  <style>
+    body {
+      background-image: url('career.jpg');
+      background-color: rgb(240, 239, 239);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 50px;
+      padding: 50px;
+    }
+
+    /* Title */
+    h1 {
+      margin-bottom: 20px;
+      color: brown;
+    }
+    
+    label {
+      display:inline-flex;
+      margin-bottom: 30px;
+    }
+     
+    select {
+      width: 200px;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    h2 {
+      margin-top: 30px;
+    }
+
+    #applicant-count {
+      font-weight: bold;
+      /* color:deeppink; */
+    }
+
+    ul {
+      /* list-style-type:armenian; */
+      padding: 2;
+      margin: 2;
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color:blue;
+    }
+
+    /* a:hover {
+      text-decoration:cadetblue;
+    } */
+</style>
+</head>
+<body>
+  <h1>Job Applicants</h1>
+  <label for="filtered">Filter by:</label>
+  <select id="filtered">
+    <option value="all">All</option>
+    <option value="Extraverted">Extraverted</option>
+    <option value="Dependable">Dependable</option>
+    <option value="Responsible">Responsible</option>
+    <option value="Serious">Serious</option>
+    <option value="Lively">Lively</option>
+  </select>
+
+  <h2>Job Applicants Count: <span id="applicant-count">0</span></h2>
+
+  <table>
+    <tr>
+      <th>S.No.</th>
+      <th>Name</th>
+      <th>Personality</th>
+      <th>Job Title</th>
+      <th>Salary Predicted</th>
+    </tr>
+  {% for person in persons %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ person.name }}</td>
+    <td>{{ person.personality }}</td>
+    <td> {{ person.JobTitle }}</td>
+</tr>
+  {% endfor %}
+ </table>
+</body>
+</html>
