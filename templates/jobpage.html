@@ -55,6 +55,22 @@
       color:blue;
     }
 
+    table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
     /* a:hover {
       text-decoration:cadetblue;
     } */
@@ -85,9 +101,9 @@
   {% for person in persons %}
   <tr>
     <td>{{ loop.index }}</td>
-    <td>{{ person.name }}</td>
+    <td>{{ person.Name }}</td>
     <td>{{ person.personality }}</td>
-    <td> {{ person.JobTitle }}</td>
+    <td> {{ person.JobTitle Predicted }}</td>
 </tr>
   {% endfor %}
  </table>

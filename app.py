@@ -2,6 +2,7 @@ import io
 from blinker import receiver_connected
 import pandas as pd
 import os
+import pickle
 from tkinter import Tk
 from cryptography.fernet import Fernet
 from pymongo.errors import DuplicateKeyError
@@ -179,7 +180,7 @@ def loginEmployee():
         if user:
             # Successful login
             print("Done")
-            return render_template("jobpage.html")
+            return redirect('jobpage')
         else:
             # Invalid credentials
             return render_template('loginEmployee.html', error='Invalid username or password')
@@ -379,20 +380,43 @@ def jobtitleresult():
 
 @app.route('/jobpage',methods = ['GET','POST'])
 def jobpage():
+    print("Hello")
     if request.method == 'GET':
+        print("YESSS")
         persons = users_collection.find()
+        print(persons)
         return render_template('jobpage.html',persons=persons)
     return render_template("jobpage.html")
 
 
-@app.route('/salaryprediction',methods = ['POST','GET'])
+@app.route('/salaryprediction',methods = ['POST','GET','PUT'])
 def salaryprediction():
     if request.method == 'POST':
-        resume_path = "path_to_your_resume.pdf"
-        # job_title = 
-        print("Extracted Job Title:")
+        a = request.form.get("country") 
+        print(a)
+        b = request.form.get("education") 
+        print(b)
+        c = request.form.get("experienceValue") 
+        print(c)
+        data = load_model()
+        regressor = data["model"]
+        le_country = data["le_country"]
+        le_education = data["le_education"]
+        X = np.array([[a, b, c ]])
+        X[:, 0] = le_country.transform(X[:,0])
+        X[:, 1] = le_education.transform(X[:,1])
+        X = X.astype(float)
+        salary = regressor.predict(X)
+        print(f"The estimated salary is ${salary[0]:.2f}")
         return render_template('salaryprediction.html')
     return render_template('salaryprediction.html')
+
+def load_model():
+    with open('saved_steps.pkl', 'rb') as file:
+        data = pickle.load(file)
+    return data
+
+
 
 def checkValue(c):
     if(c=="Yes"):
@@ -553,3 +577,4 @@ class jobPredict:
         print(data)
         value = self.dtree.predict([data])        
         return value
+    

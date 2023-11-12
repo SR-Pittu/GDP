@@ -1,104 +1,121 @@
 <!DOCTYPE html>
-<html>
-<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Salary Prediction</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <style>
     body {
-      background-image: url('career.jpg');
-      background-color: rgb(240, 239, 239);
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      font-family: Arial, sans-serif;
-      margin: 100px;
-      padding: 100px;
-    }
-
-    label {
-      display: inline-block;
-      width: 200px;
-    }
-
-    input[type="text"],
-    input[type="number"] {
-      width: 200px;
-      border: 1px solid brown;
-    }
-
-    input[type="file"] {
-      padding: 10px;
-      background-color: rgb(114, 179, 193);
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .button {
-      background-color: brown;
-      border: none;
-      color: white;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 20px;
       text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 15px;
-      cursor: pointer;
-      padding: 15px 32px;
-      border-radius: 15px;
-      height: 10px;
-    }
-    .button:hover {
-      /* Hover styles */
-      color: white;
-      background-color: rgb(190, 0, 0);
-      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
     }
 
     h1 {
-      margin-bottom: 20px;
       color: brown;
     }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    output {
+      display: inline-block;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    button {
+      background-color: brown;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
   </style>
-  <form action="action_page.php">
-  <div class="container">
+
 </head>
 
 <body>
+  <form method="POST" action = "{{ url_for('salaryprediction')}}">
+  <h1>Salary Prediction</h1>                                                                            
+    <label for="country"><b>Country:</b></label>
+    <select id="country" name="country">
+      <option value="United States of America">United States of America</option>
+      <option value="India">India</option>
+      <option value="United Kingdom of Great Britain and Northern Ireland">United Kingdom of Great Britain and Northern Ireland</option>
+      <option value="Germany">Germany</option>
+      <option value="Canada">Canada</option>
+      <option value="Australia">Australia</option>
+      <option value="Brazil">Brazil</option>
+      <option value="Other">Other</option>
+      <option value="France">France</option>
+      <option value="Netherlands">Netherlands</option>
+      <option value="Switzerland">Switzerland</option>
+      <option value="Spain">Spain</option>
+      <option value="Sweden">Sweden</option>
+      <option value="Italy">Italy</option>
+      <option value="Poland">Poland</option>
+      <option value="Denmark">Denmark</option>
+      <option value="Norway">Norway</option>
+      <option value="Israel">Israel</option>
+    </select>
 
-  <div class="container">
-    <h1>Salary Prediction</h1>
-    <div class="login">
-      <label>Full Name</label>
-      <input type="text" name="Full Name" placeholder="enter your full name" required="required"  >
-      <!-- <br><br> -->
-      <!-- <label for="job-title">Filter by Job Title:</label> -->
-      <!-- <select id="job-title">
-        <option value="all">All</option>
-        <option value="Software-engineer">Software Engineer</option>
-        <option value="web-developer">Web Developer</option>
-        <option value="Mobile App Developer">Mobile App Developer</option>
-        <option value="Frontend Developer">Frontend Developer</option>
-        <option value="Backend Developer">Backend Developer</option>
-        <option value="Full Stack Developer">Full Stack Developer</option>
-        <option value="DevOps Engineer">DevOps Engineer</option>
-        <option value="Data Engineer">Data Engineer</option>
-      </select> -->
-      <br>
-      <br>
-      <label for="cv">Upload Resume:</label>
-      <input type="file" id="cv" name="cv"><br><br>
-      <a class="button">Predict</a>
+    <label for="education"><b>Education Level:</b></label>
+    <select id="education" name="education">
+      <option value="Less than a Bachelors">Less than a Bachelors</option>
+      <option value="Bachelor's degree">Bachelor's degree</option>
+      <option value ="Master's degree">Master's degree</option>
+      <option value = "Post grad">Post grad</option>
+    </select>
 
-    </div>
+    <label for="experience"><b>Years of Experience:</b></label>
+    <input type="range" id="experience" name="experience" min="0" max="50" value="3">
+    <output for="experience" id="experienceValue">3</output><br><br>
 
-  </div>
-</body>
-
+    <button type="button">Calculate Salary</button>
+   <div id="result">
+    {% if salary %}
+      The estimated salary is ${{ salary|round(2) }}.
+   {% endif %}
+   </div>
+  </form>
+  </body>
+<script>
+   document.getElementById("experience").addEventListener("input", function () {
+      document.getElementById("experienceValue").innerHTML = this.value;
+    });
+</script>
 </html>

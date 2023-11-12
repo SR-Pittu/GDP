@@ -80,42 +80,5 @@
          <div id="error-message" class="error-message"></div>
        </form>
      </div>
- 
-     <!-- <script>
-       // Simulated registration data
-       var registeredUsers = [
-         { email: "udayasriprasadam@gmail.com", password: "U123" },
-         // Add more registered users here if needed
-       ];
- 
-       function validateForm() {
-         var email = document.getElementById("email").value;
-         var password = document.getElementById("password").value;
- 
-         // Find the registered user with the same email
-         var registeredUser = registeredUsers.find(function (user) {
-           return user.email === email;
-         });
- 
-         if (registeredUser) {
-           // If a user with the given email is found, check the password
-           if (registeredUser.password === password) {
-             // Successful login
-             window.location.href = "/dashboard";
-             return false; // Prevent form submission
-           } else {
-             // Incorrect password
-             document.getElementById("error-message").innerText =
-               "Incorrect password";
-             return false;
-           }
-         } else {
-           // User with the given email is not found
-           document.getElementById("error-message").innerText =
-             "Email not registered";templates/login.html
-           return false;
-         }
-       }
-     </script> -->
    </body>
  </html>
