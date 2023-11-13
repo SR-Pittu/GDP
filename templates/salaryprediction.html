@@ -33,6 +33,20 @@
       margin-bottom: 8px;
       color: #333;
     }
+    .button {
+      background-color: rgb(141, 84, 84);
+      border: none;
+      color: white;
+      padding: 15px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 0 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      width: 30px;
+    }
 
     select,
     input {
@@ -48,6 +62,12 @@
       display: inline-block;
       font-weight: bold;
       margin-left: 10px;
+    }
+
+    .button:hover {
+      color: white;
+      background-color: rgb(190, 0, 0);
+      box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.24), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
     }
 
     button {
@@ -69,10 +89,12 @@
 </head>
 
 <body>
-  <form method="POST" action = "{{ url_for('salaryprediction')}}">
-  <h1>Salary Prediction</h1>                                                                            
+  <form id="salaryForm" method="POST" action="{{ url_for('salaryprediction') }}">
+  <h1>Salary Prediction</h1>  
+   <label for="name"><b>Name</b></label><br>
+    <input type="text" id="name" name =  "name" placeholder="Enter Name" required>                                                                         
     <label for="country"><b>Country:</b></label>
-    <select id="country" name="country">
+    <select name="country">
       <option value="United States of America">United States of America</option>
       <option value="India">India</option>
       <option value="United Kingdom of Great Britain and Northern Ireland">United Kingdom of Great Britain and Northern Ireland</option>
@@ -94,10 +116,10 @@
     </select>
 
     <label for="education"><b>Education Level:</b></label>
-    <select id="education" name="education">
+    <select name="education">
       <option value="Less than a Bachelors">Less than a Bachelors</option>
-      <option value="Bachelor's degree">Bachelor's degree</option>
-      <option value ="Master's degree">Master's degree</option>
+      <option value="Bachelor’s degree">Bachelor's degree</option>
+      <option value ="Master’s degree">Master's degree</option>
       <option value = "Post grad">Post grad</option>
     </select>
 
@@ -105,11 +127,15 @@
     <input type="range" id="experience" name="experience" min="0" max="50" value="3">
     <output for="experience" id="experienceValue">3</output><br><br>
 
-    <button type="button">Calculate Salary</button>
+    <button type="button" onclick="submitForm()">Calculate Salary</button>
    <div id="result">
     {% if salary %}
-      The estimated salary is ${{ salary|round(2) }}.
+      The estimated salary is ${{ salary }}.
+      <div class="button-container"> 
+      <a href="/dashboard" class="button">Done</a>
+      </div>
    {% endif %}
+
    </div>
   </form>
   </body>
@@ -117,5 +143,8 @@
    document.getElementById("experience").addEventListener("input", function () {
       document.getElementById("experienceValue").innerHTML = this.value;
     });
+  function submitForm() {
+      document.getElementById("salaryForm").submit();
+   }  
 </script>
 </html>

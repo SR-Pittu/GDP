@@ -81,16 +81,16 @@ tr:nth-child(even) {
   <label for="filtered">Filter by:</label>
   <select id="filtered">
     <option value="all">All</option>
-    <option value="Extraverted">Extraverted</option>
-    <option value="Dependable">Dependable</option>
-    <option value="Responsible">Responsible</option>
-    <option value="Serious">Serious</option>
-    <option value="Lively">Lively</option>
+    <option value="extraverted">Extraverted</option>
+    <option value="dependable">Dependable</option>
+    <option value="responsible">Responsible</option>
+    <option value="serious">Serious</option>
+    <option value="lively">Lively</option>
   </select>
 
   <h2>Job Applicants Count: <span id="applicant-count">0</span></h2>
 
-  <table>
+  <table id="applicant-table">
     <tr>
       <th>S.No.</th>
       <th>Name</th>
@@ -103,9 +103,31 @@ tr:nth-child(even) {
     <td>{{ loop.index }}</td>
     <td>{{ person.Name }}</td>
     <td>{{ person.personality }}</td>
-    <td> {{ person.JobTitle Predicted }}</td>
-</tr>
+    <td> {{ person.JobTitle }}</td>
+    <td>{{ person.SalaryPredicted }}</td>
+  </tr>
   {% endfor %}
- </table>
+ </table> 
+ <script>
+  // Function to filter the table based on selected value
+  function filterTable() {
+    var filterValue = document.getElementById("filtered").value;
+    var table = document.getElementById("applicant-table");
+    var rows = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, hide those that don't match the filter
+    for (var i = 1; i < rows.length; i++) {
+      var personalityColumn = rows[i].getElementsByTagName("td")[2];
+      if (filterValue === "all" || personalityColumn.textContent === filterValue) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+  }
+
+  // Attach the filter function to the change event of the dropdown
+  document.getElementById("filtered").addEventListener("change", filterTable);
+</script>
 </body>
 </html>

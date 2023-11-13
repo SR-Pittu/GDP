@@ -368,7 +368,7 @@ def jobprediction():
         persona =  np.array(a)
         p = persona[0]
         # users_collection.update({"username": user}, { $set : {"personality" : 1 } } )
-        users_collection.update_one({"username": user}, {"$set": {"JobTitle Predicted": p}})
+        users_collection.update_one({"username": user}, {"$set": {"Name": name ,"JobTitle": p}})
         return render_template("jobtitleresult.html",a=a, name= name)
     return render_template("jobprediction.html")
 
@@ -396,7 +396,7 @@ def salaryprediction():
         print(a)
         b = request.form.get("education") 
         print(b)
-        c = request.form.get("experienceValue") 
+        c = request.form.get("experience") 
         print(c)
         data = load_model()
         regressor = data["model"]
@@ -407,8 +407,17 @@ def salaryprediction():
         X[:, 1] = le_education.transform(X[:,1])
         X = X.astype(float)
         salary = regressor.predict(X)
-        print(f"The estimated salary is ${salary[0]:.2f}")
-        return render_template('salaryprediction.html')
+        name = request.form.get('name')
+        print(name)
+        print(f"The estimated salary is ${salary[0]:.2f}") 
+        user = session.get('user_id')
+        print(user)
+        persona =  np.array(salary)
+        p = persona[0]
+        # users_collection.update({"username": user}, { $set : {"personality" : 1 } } )
+        users_collection.update_one({"username": user}, {"$set": {"Name": name ,"SalaryPredicted": p}})
+
+        return render_template('salaryprediction.html',salary=salary)
     return render_template('salaryprediction.html')
 
 def load_model():
