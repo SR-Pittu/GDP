@@ -381,6 +381,7 @@ def jobtitleresult():
 @app.route('/jobpage',methods = ['GET','POST'])
 def jobpage():
     print("Hello")
+    
     if request.method == 'GET':
         print("YESSS")
         persons = users_collection.find()
