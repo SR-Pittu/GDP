@@ -1,0 +1,12 @@
+pandas
+pickle
+tkinter
+pymongo
+pyresparser
+resume_parser
+sklearn
+flask
+spacy
+numpy
+seaborn
+xgboost
