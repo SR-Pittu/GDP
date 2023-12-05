@@ -66,3 +66,16 @@ button {
     padding: 15px 32px;
     border-radius: 15px;
 }
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 4px;
+    position: fixed;
+    bottom: 0;
+    left: 0; /* Add this line to set the left position */
+    width: 100%;
+    border-top: 1px solid #555;
+    font-size: 14px;
+}
