@@ -9,3 +9,4 @@ numpy
 seaborn
 xgboost
 blinker
+nltk
