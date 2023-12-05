@@ -1,0 +1,68 @@
+body {
+    background-image: url('career.jpg');
+    background-color: rgb(240, 239, 239);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    margin: 50px;
+    padding: 50px;
+}
+
+/* Title */
+h1 {
+    margin-bottom: 20px;
+    color: brown;
+}
+
+label {
+    display: inline-flex;
+    margin-bottom: 30px;
+}
+
+select {
+    width: 200px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+h2 {
+    margin-top: 30px;
+}
+
+#applicant-count {
+    font-weight: bold;
+    /* color:deeppink; */
+}
+
+ul {
+    /* list-style-type:armenian; */
+    padding: 2;
+    margin: 2;
+}
+
+li {
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

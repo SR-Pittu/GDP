@@ -3,19 +3,13 @@ from blinker import receiver_connected
 import pandas as pd
 import os
 import pickle
-from tkinter import Tk
-from cryptography.fernet import Fernet
-from pymongo.errors import DuplicateKeyError
-import subprocess
 from pyresparser import ResumeParser
 from resume_parser import resumeparse
 from sklearn import linear_model
 from flask import request, session, redirect, Flask, render_template, flash
 from pymongo import MongoClient
-from sklearn.discriminant_analysis import StandardScaler
 import spacy
 import numpy as np
-import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix,accuracy_score
 from sklearn import svm
@@ -27,8 +21,6 @@ import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LogisticRegression
-import pandas as pd
-import spacy
 
 class train_model:
     def __init__(self):
