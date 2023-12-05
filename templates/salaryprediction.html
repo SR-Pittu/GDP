@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Salary Prediction</title>
   <link rel="stylesheet" href="/static/salary.css">
 </head>
-
 <body>
   <form id="salaryForm" method="POST" action="{{ url_for('salaryprediction') }}">
   <h1>Salary Prediction</h1>  
@@ -34,7 +32,6 @@
       <option value="Norway">Norway</option>
       <option value="Israel">Israel</option>
     </select>
-
     <label for="education"><b>Education Level:</b></label>
     <select name="education">
       <option value="Less than a Bachelors">Less than a Bachelors</option>
@@ -42,11 +39,9 @@
       <option value ="Master’s degree">Master's degree</option>
       <option value = "Post grad">Post grad</option>
     </select>
-
     <label for="experience"><b>Years of Experience:</b></label>
     <input type="range" id="experience" name="experience" min="0" max="50" value="3">
     <output for="experience" id="experienceValue">3</output><br><br>
-
     <button type="button" onclick="submitForm()">Calculate Salary</button>
    <div id="result">
     {% if salary %}
@@ -55,8 +50,7 @@
       <a href="/dashboard" class="button">Done</a>
       </div>
    {% endif %}
-
-   </div>
+  </div>
   </form>
   <footer>
     <p>&copy; 2023 Career Predictor. All rights reserved.</p>
