@@ -1,5 +1,8 @@
 body {
     background-image: url('career.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     margin: 0;
     font-family: Arial, sans-serif;
 }
@@ -60,6 +63,21 @@ body {
 .navbar a:hover {
     color: purple;
 }
+
+/* Add these styles to your existing CSS */
+
+.logout-button {
+    color: brown;
+    text-decoration: none;
+    margin-left: 10px;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Add a smooth transition effect */
+}
+
+.logout-button:hover {
+    color: purple;
+}
+
 
 footer {
     background-color: #333;
