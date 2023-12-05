@@ -10,3 +10,4 @@ seaborn
 xgboost
 blinker
 nltk
+nltk.download('stopwords')
