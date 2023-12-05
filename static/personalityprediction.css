@@ -73,3 +73,16 @@ input[type="file"] {
     background-color: rgb(190, 0, 0);
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 4px;
+    position: fixed;
+    bottom: 0;
+    left: 0; /* Add this line to set the left position */
+    width: 100%;
+    border-top: 1px solid #555;
+    font-size: 14px;
+}

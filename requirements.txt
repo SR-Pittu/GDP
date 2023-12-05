@@ -2,7 +2,7 @@ pandas
 pymongo
 pyresparser
 resume_parser
-sklearn
+scikit-learn
 flask
 spacy
 numpy
