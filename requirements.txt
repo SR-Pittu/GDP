@@ -9,5 +9,4 @@ numpy
 seaborn
 xgboost
 blinker
-nltk
-nltk.download('stopwords')
+nltk==3.6.5
