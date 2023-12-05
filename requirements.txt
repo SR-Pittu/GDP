@@ -1,6 +1,4 @@
 pandas
-pickle
-tkinter
 pymongo
 pyresparser
 resume_parser
