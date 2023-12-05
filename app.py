@@ -47,7 +47,6 @@ class train_model:
     def test(self, test_data):
         model = train_model()
 # Train the logistic regression model
-        nlp = spacy.load("en_core_web_sm")
         test_predict = list()
         for i in test_data:
             test_predict.append(int(i))
@@ -95,9 +94,6 @@ def check_type(self,data):
         return str_list
     else:   
         return str(data)
-
-nlp = spacy.load("en_core_web_sm")
-
 
 app = Flask(__name__)
 app.secret_key = '1809'
@@ -433,17 +429,6 @@ def valuesCheck(b):
     else:
         return 2
 
-
-def extract_skills_from_cv(cv_text):
-    # Initialize an empty list for resume tokens
-    resume_tokens = []
-
-    # Tokenize the resume text
-    for token in nlp(cv_text):
-        if not token.is_stop and not token.is_punct:
-            resume_tokens.append(token.text.lower())
-
-    return resume_tokens
 class jobPredict:
     def __init__(self):
         self.dtree = DecisionTreeClassifier(random_state=1)
