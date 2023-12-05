@@ -3,63 +3,19 @@
 <head>
   <title>Job role Prediction</title>
   <link rel="stylesheet" href="/static/jobprediction.css">
-  <!-- <script>
-    function trackApplication() {
-      var name = document.getElementById('name').value;
-      var position = document.getElementById('position').value;
-      var experience = parseInt(document.getElementById('experience').value);
-      var education = document.getElementById('education').value;
-
-      // Perform client-side validation if necessary
-      
-      // Construct the application data object
-      var applicationData = {
-        name: name,
-        position: position,
-        experience: experience,
-        education: education
-      };
-
-      // Make an AJAX request to the server to track the application
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/track_application', true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-          alert(response.message);
-        }
-      };
-
-      // Convert the application data object to URL-encoded format
-      var formData = Object.keys(applicationData).map(function(key) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(applicationData[key]);
-      }).join('&');
-
-      xhr.send(formData);
-    }
-    
-  </script> -->
-  <!-- <form action="action_page.php"> -->
     <div class="container">
 </head>
-<body>
-  
+<body> 
   <h1>Job Title Prediction</h1>
-
   <form method="POST" action = "{{ url_for('jobprediction' )}}">
     <label for="name"><b>Name</b></label><br>
     <input type="text" id="name" name =  "name" placeholder="Enter Name" required><br><br>
-
     <label for="LogicalSkills">Rate your Logical quotient Skills</label>
         <input type="text" id="LogicalSkills" name="LogicalSkills" placeholder="1-10" required="required"><br><br>
-
         <label for="CodingSkills">Rate your Coding Skills</label>
         <input type="text" id="CodingSkills" name="CodingSkills" placeholder="1-10" required="required"><br><br>
-
         <label for="Hackathons">Enter number of Hackathons participated </label>
         <input type="text" id="Hackathons" name="Hackathons" placeholder="1-10" required="required"><br><br>
-
         <label for="PublicSpeaking">Rate Your Public Speaking</label>
         <input type="text" id="PublicSpeaking" name="PublicSpeaking" placeholder="1-10" required="required"><br><br>
         <label for="j">Self Learning Capability</label>
@@ -154,12 +110,9 @@
     <option value="Trilogy">Trilogy</option>
     <option value="Fantasy">Fantasy</option>
     <option value="Childrens">Childrens</option>
-    <option value="Mystery">Mystery</option>
-    
+    <option value="Mystery">Mystery</option>    
     </select><br><br>
-
     <label for ="j11">Interested_Type_of_Books</label>
-
     <select name="j11">
     <option value="Information security">Information security</option>
     <option value="Shell Programming">Shell Programming</option>
@@ -170,11 +123,8 @@
     <option value="Hadoop">Hadoop</option>
     <option value="App Development">App Development</option>
     <option value="Python">Python</option>
-
     </select><br><br>
-
     <label for="j12">Workshops Attended</label>
-
     <select name="j12">
     <option value="Testing">Testing</option>
     <option value="Database Security">Database Security</option>
@@ -184,11 +134,8 @@
     <option value="Hacking">Hacking</option>
     <option value="Cloud Computing">Cloud Computing</option>
     <option value="Web Technologies">Web Technologies</option>
-
     </select><br><br>
-
     <label for="j13">Type of Company You Want to Settle In</label>
-
     <select name="j13">
     <option value="BPA">BPA</option>
     <option value="Cloud Services">Cloud Services</option>
@@ -200,10 +147,8 @@
     <option value="Sales and Marketing">Sales and Marketing</option>
     <option value="Product Based">Product Based</option>
     <option value="Service Based">Service Based</option>
-
     </select><br><br>        
         <label for="j14">Interested Career Area</label>
-
         <select name="j14">
         <option value="Testing">Testing</option>
         <option value="system developer">system developer</option>
@@ -211,7 +156,6 @@
         <option value="security">security</option>
         <option value="developer">developer</option>
         <option value="cloud computing">cloud computing</option> 
-
         </select>
         <br>
         <input type="submit" class="button" value="Predict">
