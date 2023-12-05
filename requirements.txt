@@ -8,3 +8,4 @@ spacy
 numpy
 seaborn
 xgboost
+blinker
