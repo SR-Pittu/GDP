@@ -9,4 +9,3 @@ numpy
 seaborn
 xgboost
 blinker
-nltk==3.6.5
